@@ -1,0 +1,23 @@
+<div class="container">
+  <p>
+    log-in works!
+  </p>
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="email">email</label>
+      <input type="text" class="form-control" required
+        [(ngModel)]="model.email"
+          name="email"  #email >
+      <!--<div [hidden]="email.valid || email.pristine" class="alert alert-danger">-->
+      <!--  Email is required-->
+      <!--</div>-->
+    </div>
+    <div>
+      <label for="password">password</label>
+      <input [(ngModel)]="model.password" type="text" name="password" required>
+    </div>
+    <input type="submit" value="Submit"/>
+  </form>
+</div>
+
+<!--https://angular.io/docs/ts/latest/guide/forms.html-->
