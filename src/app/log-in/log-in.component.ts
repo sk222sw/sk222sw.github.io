@@ -27,6 +27,8 @@ export class LogInComponent implements OnInit {
 
     console.log(email, password)
 
+    this.userService.getThefts()
+
     // this.userService.login(email, password)
     //   .subscribe(result => {
     //     if (result) {
