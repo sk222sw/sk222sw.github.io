@@ -6,7 +6,7 @@ export class TheftService {
 
   constructor() { }
 
-  getAll(limit: number = 10, offset: number = 0) {}
+  getAll(limit = 10, offset = 0) {}
   getById(id: number) {}
   getByDescription(description: string) {}
   getNear(position: Position) {}

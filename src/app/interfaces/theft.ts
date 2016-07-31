@@ -5,4 +5,5 @@ export interface Theft {
   description: string
   time: Date
   tags: Tag[]
+  position: Position
 }
