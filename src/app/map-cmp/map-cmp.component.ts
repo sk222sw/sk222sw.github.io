@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { GOOGLE_MAPS_PROVIDERS, GOOGLE_MAPS_DIRECTIVES } from 'angular2-google-maps/core'
+
+import { Marker, Theft } from '../interfaces'
 
 @Component({
   moduleId: module.id,
@@ -11,6 +13,9 @@ import { GOOGLE_MAPS_PROVIDERS, GOOGLE_MAPS_DIRECTIVES } from 'angular2-google-m
 export class MapCmpComponent implements OnInit {
   private lat: number = 56
   private lon: number = 15
+
+  @Input() thefts: Theft[]
+
   constructor() { }
 
   getLat = () => this.lat
@@ -20,38 +25,30 @@ export class MapCmpComponent implements OnInit {
     console.log(`clicked the marker: ${label || index}`)
   }
 
-  markers: marker[] = [
-	  {
-		  lat: 51.673858,
-		  lng: 7.815982,
-		  label: 'A',
-		  draggable: true,
-		  content: 'Bla bla blabla'
-	  },
-	  {
-		  lat: 51.373858,
-		  lng: 7.215982,
-		  label: 'B',
-		  draggable: false,
-		  content: 'muuuuu,'
-	  },
-	  {
-		  lat: 51.723858,
-		  lng: 7.895982,
-		  label: 'C',
-		  draggable: true,
-		  content: 'sjldfsdjfkj'
-	  }
+  markers: Marker[] = [
+    {
+      lat: 51.673858,
+      lng: 7.815982,
+      label: 'A',
+      draggable: true,
+      content: 'Bla bla blabla',
+    },
+    {
+      lat: 51.373858,
+      lng: 7.215982,
+      label: 'B',
+      draggable: false,
+      content: 'muuuuu,',
+    },
+    {
+      lat: 51.723858,
+      lng: 7.895982,
+      label: 'C',
+      draggable: true,
+      content: 'sjldfsdjfkj',
+    },
   ]
   ngOnInit() {
   }
 
-}
-
-interface marker {
-  lat: number
-  lng: number
-  draggable: boolean
-  label: string
-  content: string
 }
