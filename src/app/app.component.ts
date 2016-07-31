@@ -9,7 +9,8 @@ import { LogInComponent } from './log-in'
   styleUrls: ['app.component.css'],
   directives: [
     ROUTER_DIRECTIVES,
-    LogInComponent],
+    LogInComponent,
+  ],
 })
 export class AppComponent {
   title = 'app works!'

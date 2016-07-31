@@ -4,6 +4,8 @@ import { AppComponent, environment } from './app/'
 import { appRouterProviders } from './app/app.routes'
 import { HTTP_PROVIDERS } from '@angular/http'
 import { disableDeprecatedForms, provideForms } from '@angular/forms'
+import { LoggedInGuard } from './app/logged-in.guard'
+import { UserService } from './app/user.service'
 
 if (environment.production) {
   enableProdMode()
@@ -14,4 +16,6 @@ bootstrap(AppComponent, [
     HTTP_PROVIDERS,
     disableDeprecatedForms,
     provideForms,
+    UserService,
+    LoggedInGuard,
 ])

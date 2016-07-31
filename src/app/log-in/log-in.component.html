@@ -1,7 +1,4 @@
 <div class="container">
-  <p>
-    log-in works!
-  </p>
   <form (ngSubmit)="onSubmit()">
     <div>
       <label for="email">email</label>
@@ -18,6 +15,7 @@
     </div>
     <input type="submit" value="Submit"/>
   </form>
+  <flash [error]="errorMessage"></flash>
 </div>
 
 <!--https://angular.io/docs/ts/latest/guide/forms.html-->

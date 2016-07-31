@@ -5,53 +5,55 @@ import 'rxjs/add/operator/toPromise'
 @Injectable()
 export class UserService {
   private loggedIn = false
+  private contentTypeJSON: string = 'application/json'
+  private apiKey: string = 'Z-QJ43o-1yrXmb_NRFJCtQ'
+  private headers = new Headers()
+  private authUrl: string = 'https://bike-theft.herokuapp.com/knock/auth_token'
 
   constructor(private http: Http) {
-    this.loggedIn = !!localStorage.getItem('auth_token')
-  }
-
-  getThefts() {
-    let headers = new Headers()
-    headers.append('Content-Type', 'application/json')
-    headers.append('API-key', 'Z-QJ43o-1yrXmb_NRFJCtQ')
-    return this.http.get('https://bike-theft.herokuapp.com/api/thefts/', {headers})
-      .toPromise()
-      .then(res => {
-        return true
-      })
-      .catch(err => {
-        console.log('err', err)
-        return false
-      })
-  }
-
-  login(email, password) {
-    let headers = new Headers()
-    headers.append('Content-Type', 'application/json')
-    headers.append('API-key', 'Z-QJ43o-1yrXmb_NRFJCtQ')
-    const body = {
-    'auth': {
-      'email': 'so@nny.com',
-      'password': 'hej',
-      },
+    if (localStorage.getItem('auth_token') == null) {
+      this.setLoggedIn(false)
+    } else {
+      this.setLoggedIn(true)
     }
-    return this.http.post(
-      'https://bike-theft.herokuapp.com/knock/auth_token',
-      body, {headers})
+  }
+
+  getHeaders() {
+    this.headers.append('Content-Type', this.contentTypeJSON)
+    this.headers.append('API-key', this.apiKey)
+    return this.headers
+  }
+
+  login(email: string, password: string) {
+    email = 'so@nny.com'
+    password = 'hej'
+    const body = {auth: {email, password}}
+    return this.doPost(this.authUrl, this.getHeaders(), body)
+  }
+
+  doPost(url: string, headers: Headers, body: any) {
+    return this.http.post(url, body, {headers})
   }
 
   loginSuccess(jwt) {
-    console.log('login success')
     localStorage.setItem('auth_token', jwt)
-    this.loggedIn = true
+    this.setLoggedIn(true)
   }
 
   logout() {
     localStorage.removeItem('auth_token')
-    this.loggedIn = false
+    this.setLoggedIn(false)
+  }
+
+  setLoggedIn(status: boolean) {
+    this.loggedIn = status
   }
 
   isLoggedIn() {
+    if (localStorage.getItem('auth_token') == null) {
+      return false
+    }
     return this.loggedIn
   }
+
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Output, EventEmitter } from '@angular/core'
 import { Router } from '@angular/router'
 
 import { UserService } from '../user.service'
 import { User } from '../models/user'
+import { FlashComponent } from '../flash'
 
 @Component({
   moduleId: module.id,
@@ -10,11 +11,15 @@ import { User } from '../models/user'
   templateUrl: 'log-in.component.html',
   styleUrls: ['log-in.component.css'],
   providers: [UserService],
+  directives: [
+    FlashComponent,
+  ],
 })
 export class LogInComponent implements OnInit {
-
   model = new User('', '')
   name: string
+  @Output() flashMessage = new EventEmitter()
+  private errorMessage: string
 
   constructor(
     private userService: UserService,
@@ -26,11 +31,16 @@ export class LogInComponent implements OnInit {
     this.userService.login
       (email, password)
       .map(res => res.text())
-      .subscribe(data => {
-        const {jwt} = JSON.parse(data)
-        this.userService.loginSuccess(jwt)
-        this.router.navigate([''])
-      }, err => {throw err})
+      .subscribe(
+        data => {
+          const {jwt} = JSON.parse(data)
+          this.userService.loginSuccess(jwt)
+          this.router.navigate([''])
+        },
+        err => {
+          this.errorMessage = 'Login failed'
+        }
+      )
 
   }
 

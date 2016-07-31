@@ -40,6 +40,7 @@ const barrels: string[] = [
   'app/log-in',
   'app/profile',
   'app/home',
+  'app/flash',
   /** @cli-barrel */
 ]
 
