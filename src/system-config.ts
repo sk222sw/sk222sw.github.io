@@ -9,11 +9,16 @@
  **********************************************************************************************/
 /** Map relative paths to URLs. */
 const map: any = {
+  'angular2-google-maps': 'vendor/angular2-google-maps',
 }
 
 /** User packages configuration. */
 const packages: any = {
-}
+  'angular2-google-maps/core': {
+    defaultExtension: 'js',
+    main: 'index.js' // you can also use core.umd.js here, if you want faster loads
+  }
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /***********************************************************************************************
@@ -41,6 +46,8 @@ const barrels: string[] = [
   'app/profile',
   'app/home',
   'app/flash',
+  'app/map',
+  'app/map-cmp',
   /** @cli-barrel */
 ]
 

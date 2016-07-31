@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { ROUTER_DIRECTIVES } from '@angular/router'
 import { LogInComponent } from './log-in'
+import { MapCmpComponent } from './map-cmp'
 
 @Component({
   moduleId: module.id,
@@ -10,6 +11,7 @@ import { LogInComponent } from './log-in'
   directives: [
     ROUTER_DIRECTIVES,
     LogInComponent,
+    MapCmpComponent,
   ],
 })
 export class AppComponent {
