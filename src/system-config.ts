@@ -48,6 +48,7 @@ const barrels: string[] = [
   'app/flash',
   'app/map',
   'app/map-cmp',
+  'app/theft-list',
   /** @cli-barrel */
 ]
 

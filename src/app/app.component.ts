@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { ROUTER_DIRECTIVES } from '@angular/router'
 import { LogInComponent } from './log-in'
 import { MapCmpComponent } from './map-cmp'
+import { TheftListComponent } from './theft-list'
 
 @Component({
   moduleId: module.id,
@@ -12,6 +13,7 @@ import { MapCmpComponent } from './map-cmp'
     ROUTER_DIRECTIVES,
     LogInComponent,
     MapCmpComponent,
+    TheftListComponent,
   ],
 })
 export class AppComponent {
