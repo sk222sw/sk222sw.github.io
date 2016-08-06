@@ -28,8 +28,8 @@ export class TheftService {
   }
 
   private extractData(res: Response) {
-    let body = res.json();
-    return body || { };
+    let body = res.json()
+    return body || { }
   }
 
   doGet(url: string, headers: Headers) {
@@ -97,8 +97,8 @@ export class TheftService {
 
   errorHandler(error: any) {
     let errMsg = (error.message) ? error.message :
-      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+      error.status ? `${error.status} - ${error.statusText}` : 'Server error'
     // console.error(errMsg)
-    return Observable.throw(errMsg);
+    return Observable.throw(errMsg)
   }
 }

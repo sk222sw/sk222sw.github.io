@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 import { TheftService } from '../theft.service'
 import { Theft, Position } from '../interfaces'
 
@@ -46,14 +46,14 @@ console.log(localStorage.getItem('auth_token'))
 
     const theft = {
       theft: {
-        description: "inget",
-        time: "2002-12-02",
+        description: 'inget',
+        time: '2002-12-02',
         latitude,
         longitude,
         tags: [
-          { name: "katt" }
-        ]
-      }
+          { name: 'katt' },
+        ],
+      },
     }
 
     this.theftService.create(theft)
