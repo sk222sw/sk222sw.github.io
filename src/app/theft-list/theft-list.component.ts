@@ -15,7 +15,7 @@ export class TheftListComponent implements OnInit {
   constructor(private theftService: TheftService) { }
 
   getAllThings() {
-console.log(localStorage.getItem('auth_token'))
+  console.log(localStorage.getItem('auth_token'))
 
     this.theftService.getAll()
       .subscribe(
@@ -51,7 +51,9 @@ console.log(localStorage.getItem('auth_token'))
         latitude,
         longitude,
         tags: [
-          { name: 'katt' },
+          { name: 'äpple' },
+          { name: 'mat' },
+          { name: 'dator' },
         ],
       },
     }
@@ -75,10 +77,53 @@ console.log(localStorage.getItem('auth_token'))
           error => this.errorMessage = <any>error
       )
 
+    this.theftService.getTagsByTheftId(5)
+      .subscribe(
+          data => this.logData('tag by theft:', data),
+          error => this.errorMessage = <any>error
+      )
+
+    this.theftService.getAllTags()
+      .subscribe(
+          data => this.logData('all tags:', data),
+          error => this.errorMessage = <any>error
+      )
+
+    this.theftService.getTagById(5)
+      .subscribe(
+          data => this.logData('tag by id:', data),
+          error => this.errorMessage = <any>error
+      )
+
+    this.theftService.getTheftsByTagId(5)
+      .subscribe(
+          data => this.logData('thefts by tag:', data),
+          error => this.errorMessage = <any>error
+      )
+
+    this.theftService.getAllPositions()
+      .subscribe(
+          data => this.logData('all positions:', data),
+          error => this.errorMessage = <any>error
+      )
+
+    this.theftService.getPositionById(48)
+      .subscribe(
+          data => this.logData('position by id:', data),
+          error => this.errorMessage = <any>error
+      )
+
+    this.theftService.getPositionByTheftId(5)
+      .subscribe(
+          data => this.logData('position by theft:', data),
+          error => this.errorMessage = <any>error
+      )
+
+
   }
 
   ngOnInit() {
-    this.getAllThings()
+    // this.getAllThings()
   }
 
 
