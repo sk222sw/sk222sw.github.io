@@ -14,14 +14,16 @@ export class TheftListComponent implements OnInit {
 
   constructor(private theftService: TheftService) { }
 
-  ngOnInit() {
+  getAllThings() {
+console.log(localStorage.getItem('auth_token'))
+
     this.theftService.getAll()
       .subscribe(
         data => this.logData('get all:', data),
         error => this.errorMessage = <any>error
     )
 
-    this.theftService.getById(5)
+    this.theftService.getById(32)
       .subscribe(
           data => this.logData('by id:', data),
           error => this.errorMessage = <any>error
@@ -44,28 +46,39 @@ export class TheftListComponent implements OnInit {
 
     const theft = {
       theft: {
-        description: "bensinstation",
+        description: "inget",
         time: "2002-12-02",
         latitude,
         longitude,
         tags: [
-          { name: "katt" },
-          { name: "hund" }
+          { name: "katt" }
         ]
       }
     }
+
     this.theftService.create(theft)
       .subscribe(
           data => this.logData('create:', data),
           error => this.errorMessage = <any>error
       )
 
-    const id = 5
+    const id = 34
     this.theftService.update(theft, id)
       .subscribe(
           data => this.logData('update:', data),
           error => this.errorMessage = <any>error
       )
+
+    this.theftService.delete(33)
+      .subscribe(
+          data => this.logData('delete:', data),
+          error => this.errorMessage = <any>error
+      )
+
+  }
+
+  ngOnInit() {
+    this.getAllThings()
   }
 
 

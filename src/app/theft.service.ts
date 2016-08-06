@@ -20,13 +20,10 @@ export class TheftService {
 
   getHeaders() {
     const headers = new Headers()
+    const jwt = localStorage.getItem('auth_token')
     headers.append('Content-Type', this.contentType)
     headers.append('API-key', this.apiKey)
-
-    if (this.user.isLoggedIn()) {
-      const jwt = localStorage.getItem('auth_token')
-      headers.append('Authorization', `Bearer ${jwt}`)
-    }
+    headers.append('Authorization', `Bearer ${jwt}`)
     return headers
   }
 
@@ -76,10 +73,14 @@ export class TheftService {
 
   }
 
-  deleteById(id: number) {}
+  delete(id: number) {
+    return this.http.delete(`${this.theftUrl}${id}`, {headers: this.getHeaders()})
+      .map(this.extractData)
+      .catch(this.errorHandler)
+  }
 
   update(theft: any, id: number): Observable<Theft> {
-    return this.http.put(`${this.theftUrl}${id}`, theft, this.getHeaders())
+    return this.http.put(`${this.theftUrl}${id}`, theft, {headers: this.getHeaders()})
       .map(this.extractData)
       .catch(this.errorHandler)
   }
