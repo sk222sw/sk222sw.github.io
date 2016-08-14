@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core'
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core'
 import { GOOGLE_MAPS_PROVIDERS, GOOGLE_MAPS_DIRECTIVES } from 'angular2-google-maps/core'
 import { TheftService } from '../theft.service'
 
@@ -18,6 +18,7 @@ export class MapCmpComponent implements OnInit {
   private theftMarkers: Marker[] = []
   private showMap = false
   @Input() thefts: Theft[]
+  @Output() selectTheft = new EventEmitter()
 
   constructor(private theftService: TheftService) { }
 
@@ -28,10 +29,10 @@ export class MapCmpComponent implements OnInit {
     this.theftService.getById(label.theftId)
       .subscribe(
         data => {
-          console.log(data)
+          this.selectTheft.emit(data)
         }
       )
-    console.log(`clicked the marker: ${label.content || index}`)
+    // console.log(`clicked the marker: ${label.content || index}`)
   }
 
   ngOnInit() {
