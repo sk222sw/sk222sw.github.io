@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ViewChild, ElementRef } from '@angular/core'
 import { Theft } from '../interfaces'
 import { TheftService } from '../theft.service'
 
@@ -11,9 +11,12 @@ import { TheftService } from '../theft.service'
 })
 export class TheftInfoComponent {
   @Input() theft: Theft
+  @ViewChild('tagInput') tagInput: ElementRef
   originalTheft: Theft
   editing = false
   showError = false
+  error: string
+  addingTag = false
 
   constructor(private theftService: TheftService) {}
 
@@ -23,12 +26,11 @@ export class TheftInfoComponent {
   }
 
   save() {
-    this.theft.position.address = '...'
+    // this.theft.position.address = '...'
     this.theftService.update(this.theft, this.theft.id)
       .subscribe(
         data => {
           if (data['error']) this.errorHandler(data['error'])
-          console.log(data)
           this.theftService.getPositionByTheftId(this.theft.id)
             .subscribe(
               data => {
@@ -36,13 +38,28 @@ export class TheftInfoComponent {
               }
             )
         },
-        error => {console.log(error)}
+        error => {this.errorHandler(error)}
       )
     this.editing = false
   }
 
   errorHandler(error) {
-    console.log(error)
+    this.theft = JSON.parse(JSON.stringify(this.originalTheft))
+    this.showError = true
+    this.error = error
+  }
+
+  addTag() {
+    this.addingTag = true
+  }
+
+  saveTag() {
+    const newTag = this.tagInput.nativeElement.value
+    this.addingTag = false
+    this.theft.tags.push({name: newTag} as any)
+
+    this.save()
+
   }
 
   deleteTag(selectedTag) {

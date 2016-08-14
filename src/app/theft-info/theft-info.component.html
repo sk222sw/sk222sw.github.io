@@ -30,9 +30,16 @@
     {{tag?.name}}
     <button *ngIf="editing" (click)="deleteTag(tag)">x</button>
   </div>
+  <button *ngIf="!addingTag" (click)="addTag()">+</button>
+  <input #tagInput *ngIf="addingTag" type="text" placeholder="New tag" value="">
+  <button *ngIf="addingTag" (click)="saveTag()">Add</button>
+  <div *ngIf="showError">
+    {{error}}
+    <button (click)="showError = false">hide</button>
+  </div>
   <div>
     <button *ngIf="!editing" (click)="edit()">Edit</button>
     <button *ngIf="editing" (click)="cancel()">Cancel</button>
-    <button (click)="save()">Save</button>
+    <button *ngIf="editing" (click)="save()">Save</button>
   </div>
 </div>

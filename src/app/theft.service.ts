@@ -102,6 +102,8 @@ export class TheftService {
       .catch(this.errorHandler)
   }
 
+
+
   getAllTags(): Observable<Tag[]> {
     return this.doGet(`${this.tagUrl}`, this.getHeaders())
       .map(this.extractData)
