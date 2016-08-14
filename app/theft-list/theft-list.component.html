@@ -1,0 +1,9 @@
+<div *ngIf="show">
+  <div *ngFor="let theft of theftList">
+    <div (click)="handleSelectTheft(theft)">
+      {{theft.description}}
+    </div>
+  </div>
+  <button *ngIf="offset > 0" (click)="previousPage()"><</button>
+  <button (click)="nextPage()">></button>
+</div>
