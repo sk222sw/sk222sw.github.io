@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, EventEmitter, Output } from '@angular/core'
 import { TheftService } from '../theft.service'
 import { Theft, Position } from '../interfaces'
 
@@ -11,12 +11,14 @@ import { Theft, Position } from '../interfaces'
 })
 export class TheftListComponent implements OnInit {
   theftList: Theft[]
+  limit = 10
+  offset = 0
+  show = false
+  @Output() selectTheft = new EventEmitter()
 
   constructor(private theftService: TheftService) { }
 
   getAllThings() {
-  console.log(localStorage.getItem('auth_token'))
-
     this.theftService.getAll()
       .subscribe(
         data => this.logData('get all:', data),
@@ -123,10 +125,41 @@ export class TheftListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getAllThings()
+    this.getTheftList()
   }
 
+  get theftListCount() { return this.theftList.length }
 
+  handleSelectTheft(event) {
+    this.selectTheft.emit(event)
+  }
+
+  getTheftList() {
+    this.theftService.getAll(this.limit, this.offset)
+      .subscribe(
+        data => this.setTheftList(data),
+        error => this.errorMessage = <any>error
+      )
+  }
+
+  setTheftList(data: any): void {
+    this.show = true
+    this.theftList = data.thefts
+  }
+
+  nextPage() {
+    if (this.theftListCount < 10) return
+
+    this.offset += this.limit
+    this.getTheftList()
+  }
+
+  previousPage() {
+    if (this.theftListCount === 0) return
+
+    this.offset -= this.limit
+    this.getTheftList()
+  }
 
   errorMessage(err: any) {
     console.log(err)

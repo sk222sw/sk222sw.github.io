@@ -1,4 +1,18 @@
 <p>
   theft-info works!
 </p>
-theft: {{theft.description}}
+<div class="theft-info-theft">
+  <div>
+    theft: {{theft.description}}
+  </div>
+  <div>
+    {{theft.time}}
+  </div>
+  <div>
+    {{theft.position?.address}}
+  </div>
+  Tags:
+  <div *ngFor="let tag of theft?.tags">
+    {{tag?.name}}
+  </div>
+</div>

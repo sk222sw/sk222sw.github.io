@@ -32,7 +32,6 @@ export class MapCmpComponent implements OnInit {
           this.selectTheft.emit(data)
         }
       )
-    // console.log(`clicked the marker: ${label.content || index}`)
   }
 
   ngOnInit() {
@@ -49,7 +48,6 @@ export class MapCmpComponent implements OnInit {
 
   addToMarkers(data: any) {
     const thefts = data.thefts
-    console.log(thefts[0])
     for (let t of thefts) {
       if (t.position !== null) {
         const marker = {

@@ -1,10 +1,10 @@
 <h1>
   {{title}}
 </h1>
-<flash></flash>
-<map-cmp (selectTheft)="selectTheft($event)"></map-cmp>
-<theft-list></theft-list>
-<theft-info [theft]="theft"></theft-info>
 <a [routerLink]="['/login']">Login</a>
 <a [routerLink]="['/profile']">Profile</a>
+<flash></flash>
+<map-cmp (selectTheft)="selectTheft($event)"></map-cmp>
+<theft-list (selectTheft)="selectTheft($event)"></theft-list>
+<theft-info [theft]="theft"></theft-info>
 <router-outlet></router-outlet>

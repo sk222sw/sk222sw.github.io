@@ -10,7 +10,6 @@ import { UserService } from './user.service'
 export class TheftService {
   private contentType: string = 'application/json'
   private apiKey = 'Z-QJ43o-1yrXmb_NRFJCtQ'
-  private jwt: 'string'
 
   private baseUrl = 'https://bike-theft.herokuapp.com/api/'
   private theftUrl = this.baseUrl + 'thefts/'
@@ -70,7 +69,6 @@ export class TheftService {
   }
 
   create(theft: any): Observable<Theft>  {
-    console.log(this.getHeaders())
     return this.doPost(this.theftUrl, theft, this.getHeaders())
       .map(this.extractData)
       .catch(this.errorHandler)
