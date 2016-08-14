@@ -80,8 +80,18 @@ export class TheftService {
       .catch(this.errorHandler)
   }
 
-  update(theft: any, id: number): Observable<Theft> {
-    return this.http.put(`${this.theftUrl}${id}`, theft, {headers: this.getHeaders()})
+  update(theft: Theft, id: number): Observable<Theft> {
+    console.log("terre", theft)
+    const formatedTheft = {
+      theft: {
+        description: theft.description,
+        time: theft.time,
+        latitude: theft.position.latitude,
+        longitude: theft.position.longitude,
+        tags: theft.tags,
+      },
+    }
+    return this.http.put(`${this.theftUrl}${id}`, formatedTheft, {headers: this.getHeaders()})
       .map(this.extractData)
       .catch(this.errorHandler)
   }

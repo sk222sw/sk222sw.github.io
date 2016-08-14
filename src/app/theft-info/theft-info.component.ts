@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { Theft } from '../interfaces'
 import { TheftService } from '../theft.service'
 
@@ -11,26 +11,47 @@ import { TheftService } from '../theft.service'
 })
 export class TheftInfoComponent {
   @Input() theft: Theft
-  editDescription = false
+  originalTheft: Theft
+  editing = false
+  showError = false
 
-  // @ViewChild('descriptionInput') descriptionInput
+  constructor(private theftService: TheftService) {}
 
-  constructor(private theftService: TheftService) { }
-
-  editClick(field: any) {
-    switch (field) {
-      case 'description':
-        this.editDescription = true
-        break
-      default:
-        break
-    }
+  edit(event) {
+    this.originalTheft = JSON.parse(JSON.stringify(this.theft))
+    this.editing = true
   }
 
   save() {
-    console.log(this.theft)
-    // if ()
-    this.editDescription = false
+    this.theft.position.address = '...'
+    this.theftService.update(this.theft, this.theft.id)
+      .subscribe(
+        data => {
+          if (data['error']) this.errorHandler(data['error'])
+          console.log(data)
+          this.theftService.getPositionByTheftId(this.theft.id)
+            .subscribe(
+              data => {
+                this.theft.position.address = data['position'].address
+              }
+            )
+        },
+        error => {console.log(error)}
+      )
+    this.editing = false
+  }
+
+  errorHandler(error) {
+    console.log(error)
+  }
+
+  deleteTag(selectedTag) {
+    this.theft.tags = this.theft.tags.filter(tag => tag.id !== selectedTag.id)
+  }
+
+  cancel() {
+    this.theft = JSON.parse(JSON.stringify(this.originalTheft))
+    this.editing = false
   }
 
 }

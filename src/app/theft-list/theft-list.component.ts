@@ -48,7 +48,7 @@ export class TheftListComponent implements OnInit {
 
     const theft = {
       theft: {
-        description: 'inget',
+        description: 'HEJ',
         time: '2002-12-02',
         latitude,
         longitude,
@@ -66,7 +66,7 @@ export class TheftListComponent implements OnInit {
           error => this.errorMessage = <any>error
       )
 
-    const id = 34
+    const id = 13
     this.theftService.update(theft, id)
       .subscribe(
           data => this.logData('update:', data),

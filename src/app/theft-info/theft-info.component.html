@@ -1,21 +1,38 @@
 <div class="theft-info-theft">
-  <div (click)="editClick('description')">
-    <div *ngIf="!editDescription">
+  <div>
+    {{theft.id}}
+    <div *ngIf="!editing">
       {{theft.description}}
     </div>
-    <input #descriptionInput *ngIf="editDescription" type="text" value="{{theft.description}}">
+    <input *ngIf="editing" type="text" [(ngModel)]="theft.description" value="{{theft.description}}">
   </div>
   <div>
-    {{theft.time}}
+    <div *ngIf="!editing">
+      {{theft.time | date:'yyyy-MM-dd'}}
+    </div>
+    <input *ngIf="editing" [(ngModel)]="theft.time" type="date" value="{{theft.time | date:'yyyy-MM-dd' }}">
   </div>
   <div>
-    {{theft.position?.address}}
+    <div *ngIf="!editing">
+      {{theft.position?.address}}
+    </div>
+    <div *ngIf="editing">
+      <div>
+        Latitude: <input [(ngModel)]="theft.position.latitude" type="text" value="{{theft.position?.latitude}}">
+      </div>
+      <div>
+        Longitude: <input [(ngModel)]="theft.position.longitude" type="text" value="{{theft.position?.longitude}}">
+      </div>
+    </div>
   </div>
   Tags:
   <div *ngFor="let tag of theft?.tags">
     {{tag?.name}}
+    <button *ngIf="editing" (click)="deleteTag(tag)">x</button>
   </div>
   <div>
+    <button *ngIf="!editing" (click)="edit()">Edit</button>
+    <button *ngIf="editing" (click)="cancel()">Cancel</button>
     <button (click)="save()">Save</button>
   </div>
 </div>
