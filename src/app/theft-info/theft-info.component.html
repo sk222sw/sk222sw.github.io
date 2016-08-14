@@ -1,9 +1,9 @@
-<p>
-  theft-info works!
-</p>
 <div class="theft-info-theft">
-  <div>
-    theft: {{theft.description}}
+  <div (click)="editClick('description')">
+    <div *ngIf="!editDescription">
+      {{theft.description}}
+    </div>
+    <input #descriptionInput *ngIf="editDescription" type="text" value="{{theft.description}}">
   </div>
   <div>
     {{theft.time}}
@@ -14,5 +14,8 @@
   Tags:
   <div *ngFor="let tag of theft?.tags">
     {{tag?.name}}
+  </div>
+  <div>
+    <button (click)="save()">Save</button>
   </div>
 </div>
