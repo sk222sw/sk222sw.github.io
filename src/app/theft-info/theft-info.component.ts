@@ -1,5 +1,5 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core'
-import { Theft } from '../interfaces'
+import { Component, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core'
+import { Theft, Tag } from '../interfaces'
 import { TheftService } from '../theft.service'
 
 @Component({
@@ -12,6 +12,7 @@ import { TheftService } from '../theft.service'
 export class TheftInfoComponent {
   @Input() theft: Theft
   @ViewChild('tagInput') tagInput: ElementRef
+  @Output() selectTag = new EventEmitter()
   originalTheft: Theft
   editing = false
   showError = false
@@ -26,17 +27,11 @@ export class TheftInfoComponent {
   }
 
   save() {
-    // this.theft.position.address = '...'
     this.theftService.update(this.theft, this.theft.id)
       .subscribe(
         data => {
           if (data['error']) this.errorHandler(data['error'])
-          this.theftService.getPositionByTheftId(this.theft.id)
-            .subscribe(
-              data => {
-                this.theft.position.address = data['position'].address
-              }
-            )
+          this.theft = data['theft']
         },
         error => {this.errorHandler(error)}
       )
@@ -49,6 +44,14 @@ export class TheftInfoComponent {
     this.error = error
   }
 
+  getTheftsByTag(tag: Tag) {
+    this.selectTag.emit(tag)
+  }
+
+  isInArray(value, array) {
+    return array.indexOf(value) > -1;
+  }
+
   addTag() {
     this.addingTag = true
   }
@@ -57,7 +60,6 @@ export class TheftInfoComponent {
     const newTag = this.tagInput.nativeElement.value
     this.addingTag = false
     this.theft.tags.push({name: newTag} as any)
-
     this.save()
 
   }

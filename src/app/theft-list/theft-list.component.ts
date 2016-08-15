@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core'
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core'
 import { TheftService } from '../theft.service'
 import { Theft, Position } from '../interfaces'
 
@@ -13,10 +13,13 @@ export class TheftListComponent implements OnInit {
   theftList: Theft[]
   limit = 10
   offset = 0
-  show = false
+  show = true
   @Output() selectTheft = new EventEmitter()
+  @Input() thefts: Theft[]
 
-  constructor(private theftService: TheftService) { }
+  constructor(private theftService: TheftService) {
+
+  }
 
   getAllThings() {
     this.theftService.getAll()
@@ -67,11 +70,11 @@ export class TheftListComponent implements OnInit {
       )
 
     const id = 13
-    this.theftService.update(theft, id)
-      .subscribe(
-          data => this.logData('update:', data),
-          error => this.errorMessage = <any>error
-      )
+    // this.theftService.update(theft, id)
+    //   .subscribe(
+    //       data => this.logData('update:', data),
+    //       error => this.errorMessage = <any>error
+    //   )
 
     this.theftService.delete(33)
       .subscribe(
@@ -125,7 +128,6 @@ export class TheftListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTheftList()
   }
 
   get theftListCount() { return this.theftList.length }

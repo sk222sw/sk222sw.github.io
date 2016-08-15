@@ -27,7 +27,7 @@
   </div>
   Tags:
   <div *ngFor="let tag of theft?.tags">
-    {{tag?.name}}
+    <button (click)="getTheftsByTag(tag)">{{tag?.name}}</button>
     <button *ngIf="editing" (click)="deleteTag(tag)">x</button>
   </div>
   <button *ngIf="!addingTag" (click)="addTag()">+</button>

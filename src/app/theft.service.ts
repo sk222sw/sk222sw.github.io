@@ -16,7 +16,13 @@ export class TheftService {
   private tagUrl = `${this.baseUrl}tags/`
   private positionUrl = `${this.baseUrl}positions/`
 
+  data: any
+
   constructor(private http: Http, private user: UserService) {
+  }
+
+  getTheftList() {
+    return this.getAll()
   }
 
   getHeaders() {
@@ -41,9 +47,14 @@ export class TheftService {
     return this.http.post(url, body, {headers})
   }
 
-  getAll(limit = 10, offset = 0): Observable<Theft[]> {
+  getAll(limit = 1000, offset = 0): Observable<Theft[]> {
+    if (this.data) return Observable.of(this.extractData(this.data))
+
     return this.doGet(`${this.theftUrl}?limit=${limit}&offset=${offset}`, this.getHeaders())
-      .map(this.extractData)
+      .map(data => {
+        this.data = data
+        return this.extractData(data)
+      })
       .catch(this.errorHandler)
   }
 
@@ -81,7 +92,6 @@ export class TheftService {
   }
 
   update(theft: Theft, id: number): Observable<Theft> {
-    console.log("terre", theft)
     const formatedTheft = {
       theft: {
         description: theft.description,
@@ -102,8 +112,6 @@ export class TheftService {
       .catch(this.errorHandler)
   }
 
-
-
   getAllTags(): Observable<Tag[]> {
     return this.doGet(`${this.tagUrl}`, this.getHeaders())
       .map(this.extractData)
@@ -116,13 +124,9 @@ export class TheftService {
       .catch(this.errorHandler)
   }
 
-  // TODO: Returnerar fel
   getTheftsByTagId(id: number): Observable<Theft[]> {
-    return this.doGet(`${this.tagUrl}${id}/thefts`, this.getHeaders())
-      .map(this.extractData)
-      .catch(this.errorHandler)
+    return this.getAll()
   }
-
 
   getAllPositions(): Observable<Position[]> {
     return this.doGet(this.positionUrl, this.getHeaders())
