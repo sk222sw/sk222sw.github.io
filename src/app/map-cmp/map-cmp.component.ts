@@ -76,26 +76,3 @@ export class MapCmpComponent implements OnInit {
   }
 
 }
-
-// markers: Marker[] = [
-//   {
-//     lat: 51.673858,
-//     lng: 7.815982,
-//     label: 'A',
-//     draggable: true,
-//     content: 'Bla bla blabla',
-//   },
-//   {
-//     lat: 51.373858,
-//     lng: 7.215982,
-//     label: 'B',
-//     draggable: false,
-//     content: 'muuuuu,',
-//   },
-//   {
-//     lat: 51.723858,
-//     lng: 7.895982,
-//     label: 'C',
-//     draggable: true,
-//     content: 'sjldfsdjfkj',
-//   },

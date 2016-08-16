@@ -61,4 +61,9 @@ export class AppComponent implements OnInit {
     this.theft = event.theft || event
   }
 
+  changeTitle(event) {
+    console.log('app change title');
+
+  }
+
 }

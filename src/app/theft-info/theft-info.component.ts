@@ -33,7 +33,7 @@ export class TheftInfoComponent {
         data => {
           if (data['error']) this.errorHandler(data['error'])
           this.theft = data['theft']
-          this.changeTitle.emit(this.theft.description)
+          this.changeTitle.emit(this.theft)
         },
         error => {this.errorHandler(error)}
       )

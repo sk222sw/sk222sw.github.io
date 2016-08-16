@@ -23,7 +23,6 @@ export class TheftListComponent implements OnInit {
   theftElements: Element[]
   expandedTheftId: number
   showingInfo = false
-  @Output() selectTheft = new EventEmitter()
   @Input() thefts: Theft[]
 
   constructor(private theftService: TheftService, private el: ElementRef) {
@@ -36,7 +35,7 @@ export class TheftListComponent implements OnInit {
   get theftListCount() { return this.theftList.length }
 
   handleSelectTheft(event) {
-    this.selectTheft.emit(event)
+    // this.selectTheft.emit(event)
     this.expandTheft(event.id)
   }
 
@@ -90,4 +89,16 @@ export class TheftListComponent implements OnInit {
       }
     })
   }
+
+  handleChangeTitle(event) {
+    const {id, description} = event
+    const theftTitles = this.el.nativeElement.querySelectorAll('.theft-title')
+    theftTitles.forEach(e => {
+      if (e.classList.contains(`theft-title-${id}`)) {
+        console.log(id, e)
+        e.innerHTML = description
+      }
+    })
+  }
+
 }
