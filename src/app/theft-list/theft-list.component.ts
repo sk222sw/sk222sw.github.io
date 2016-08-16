@@ -1,6 +1,7 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core'
+import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core'
 import { TheftService } from '../theft.service'
-import { Theft, Position } from '../interfaces'
+import { Theft } from '../interfaces'
+import { TheftInfoComponent } from '../theft-info'
 
 @Component({
   moduleId: module.id,
@@ -8,122 +9,24 @@ import { Theft, Position } from '../interfaces'
   templateUrl: 'theft-list.component.html',
   styleUrls: ['theft-list.component.css'],
   providers: [TheftService],
+  directives: [
+    TheftInfoComponent,
+  ],
 })
 export class TheftListComponent implements OnInit {
   theftList: Theft[]
   limit = 10
   offset = 0
   show = true
+  theftInfo: Theft
+  showTheftInfo = false
+  theftElements: Element[]
+  expandedTheftId: number
+  showingInfo = false
   @Output() selectTheft = new EventEmitter()
   @Input() thefts: Theft[]
 
-  constructor(private theftService: TheftService) {
-
-  }
-
-  getAllThings() {
-    this.theftService.getAll()
-      .subscribe(
-        data => this.logData('get all:', data),
-        error => this.errorMessage = <any>error
-    )
-
-    this.theftService.getById(32)
-      .subscribe(
-          data => this.logData('by id:', data),
-          error => this.errorMessage = <any>error
-    )
-
-    this.theftService.getByDescription('bensin')
-      .subscribe(
-          data => this.logData('by description:', data),
-          error => this.errorMessage = <any>error
-    )
-
-    this.theftService.getNear({latitude: 56, longitude: 16} as Position)
-      .subscribe(
-          data => this.logData('by position:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    const latitude = Math.floor(Math.random() * 50) + 1
-    const longitude = Math.floor(Math.random() * 50) + 1
-
-    const theft = {
-      theft: {
-        description: 'HEJ',
-        time: '2002-12-02',
-        latitude,
-        longitude,
-        tags: [
-          { name: 'äpple' },
-          { name: 'mat' },
-          { name: 'dator' },
-        ],
-      },
-    }
-
-    this.theftService.create(theft)
-      .subscribe(
-          data => this.logData('create:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    const id = 13
-    // this.theftService.update(theft, id)
-    //   .subscribe(
-    //       data => this.logData('update:', data),
-    //       error => this.errorMessage = <any>error
-    //   )
-
-    this.theftService.delete(33)
-      .subscribe(
-          data => this.logData('delete:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    this.theftService.getTagsByTheftId(5)
-      .subscribe(
-          data => this.logData('tag by theft:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    this.theftService.getAllTags()
-      .subscribe(
-          data => this.logData('all tags:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    this.theftService.getTagById(5)
-      .subscribe(
-          data => this.logData('tag by id:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    this.theftService.getTheftsByTagId(5)
-      .subscribe(
-          data => this.logData('thefts by tag:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    this.theftService.getAllPositions()
-      .subscribe(
-          data => this.logData('all positions:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    this.theftService.getPositionById(48)
-      .subscribe(
-          data => this.logData('position by id:', data),
-          error => this.errorMessage = <any>error
-      )
-
-    this.theftService.getPositionByTheftId(5)
-      .subscribe(
-          data => this.logData('position by theft:', data),
-          error => this.errorMessage = <any>error
-      )
-
+  constructor(private theftService: TheftService, private el: ElementRef) {
 
   }
 
@@ -134,6 +37,7 @@ export class TheftListComponent implements OnInit {
 
   handleSelectTheft(event) {
     this.selectTheft.emit(event)
+    this.expandTheft(event.id)
   }
 
   getTheftList() {
@@ -164,11 +68,26 @@ export class TheftListComponent implements OnInit {
   }
 
   errorMessage(err: any) {
-    console.log(err)
+    console.error(err)
   }
 
-  logData(from: string, data: any) {
-    console.log(from, data)
+  expandTheft(id: number) {
+    const theftElements = this.theftElements || this.el.nativeElement.querySelectorAll('.expand-info')
+    theftElements.forEach(e => {
+      if (e.classList.contains(`id-${id}`)) {
+        if (this.expandedTheftId === id) {
+          this.showingInfo = true
+          e.classList.add('hidden')
+          this.expandedTheftId = 0
+        } else {
+          this.expandedTheftId = id
+          e.classList.remove('hidden')
+        }
+      } else {
+        if (!e.classList.contains('hidden')) {
+          e.classList.add('hidden')
+        }
+      }
+    })
   }
-
 }

@@ -13,6 +13,7 @@ export class TheftInfoComponent {
   @Input() theft: Theft
   @ViewChild('tagInput') tagInput: ElementRef
   @Output() selectTag = new EventEmitter()
+  @Output() changeTitle = new EventEmitter()
   originalTheft: Theft
   editing = false
   showError = false
@@ -32,6 +33,7 @@ export class TheftInfoComponent {
         data => {
           if (data['error']) this.errorHandler(data['error'])
           this.theft = data['theft']
+          this.changeTitle.emit(this.theft.description)
         },
         error => {this.errorHandler(error)}
       )
@@ -49,7 +51,7 @@ export class TheftInfoComponent {
   }
 
   isInArray(value, array) {
-    return array.indexOf(value) > -1;
+    return array.indexOf(value) > -1
   }
 
   addTag() {

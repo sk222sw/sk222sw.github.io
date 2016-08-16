@@ -1,8 +1,12 @@
 <button (click)="getAllThings()">get</button>
 <div *ngIf="show">
   <div *ngFor="let theft of thefts">
-    <div (click)="handleSelectTheft(theft)">
+    <div (click)="handleSelectTheft(theft)"
+         class="theft-title-{{theft.id}}">
       {{theft.description}}
+    </div>
+    <div class="expand-info id-{{theft.id}} hidden">
+      <theft-info [theft]="theft"></theft-info>
     </div>
   </div>
   <button *ngIf="offset > 0" (click)="previousPage()"><</button>

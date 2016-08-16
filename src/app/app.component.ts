@@ -19,7 +19,7 @@ import { TheftService } from './theft.service'
     TheftListComponent,
     TheftInfoComponent,
   ],
-  providers: [TheftService]
+  providers: [TheftService],
 })
 export class AppComponent implements OnInit {
   title = 'Bike Theft Auto'
@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   theft = {} as Theft
   theftList: Theft[]
   showList = true
+  currentTheftCoordinates: number[] = []
 
   constructor(private theftService: TheftService) {
   }
@@ -35,12 +36,11 @@ export class AppComponent implements OnInit {
     this.theftService.getAll()
       .subscribe(
         data => {
-          console.log(data);
           this.theftList = data['thefts']
           this.showList = true
         },
         error => {
-          console.log("error")
+          console.error('error')
         }
       )
   }
@@ -57,6 +57,7 @@ export class AppComponent implements OnInit {
   }
 
   selectTheft(event) {
+    this.currentTheftCoordinates = [event.position.latitude, event.position.longitude]
     this.theft = event.theft || event
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { GOOGLE_MAPS_PROVIDERS, GOOGLE_MAPS_DIRECTIVES } from 'angular2-google-maps/core'
 import { TheftService } from '../theft.service'
 
@@ -17,8 +17,9 @@ export class MapCmpComponent implements OnInit {
   private lon: number = 15
   private theftMarkers: Marker[] = []
   private showMap = false
-  @Input() thefts: Theft[]
+  @Input() thefts: Theft[] // tslint:disable-line
   @Output() selectTheft = new EventEmitter()
+  @Input() coordinates: number[] = []
 
   constructor(private theftService: TheftService) { }
 
@@ -71,7 +72,7 @@ export class MapCmpComponent implements OnInit {
   }
 
   errorMessage(err: any) {
-    console.log(err)
+    console.error(err)
   }
 
 }
