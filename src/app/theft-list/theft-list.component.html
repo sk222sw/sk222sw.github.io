@@ -1,4 +1,7 @@
-<button (click)="getAllThings()">get</button>
+Filter:
+<span *ngIf="filter === 'all'">{{filter}}</span>
+<span (click)="removeTagFilter()" *ngIf="filter !== 'all'">{{filter}}</span>
+<hr>
 <div *ngIf="show">
   <div *ngFor="let theft of thefts">
     <div (click)="handleSelectTheft(theft)"
@@ -6,7 +9,7 @@
       {{theft.description}}
     </div>
     <div class="expand-info id-{{theft.id}} hidden">
-      <theft-info [theft]="theft" (changeTitle)="handleChangeTitle($event)"></theft-info>
+      <theft-info [theft]="theft" (selectTag)="filterByTag($event)" (changeTitle)="handleChangeTitle($event)"></theft-info>
     </div>
   </div>
   <button *ngIf="offset > 0" (click)="previousPage()"><</button>

@@ -45,25 +45,8 @@ export class AppComponent implements OnInit {
       )
   }
 
-  selectTag(event) {
-    const name = event.name
-    const thefts = []
-    for (let theft of this.theftList) {
-      for (let tag of theft.tags) {
-        if (tag.name === name) thefts.push(theft)
-      }
-    }
-    this.theftList = thefts
-  }
-
   selectTheft(event) {
     this.currentTheftCoordinates = [event.position.latitude, event.position.longitude]
     this.theft = event.theft || event
   }
-
-  changeTitle(event) {
-    console.log('app change title');
-
-  }
-
 }
