@@ -27,7 +27,10 @@ Filter:
       {{theft.description}}
     </div>
     <div class="expand-info id-{{theft.id}} hidden">
-      <theft-info [theft]="theft" (selectTag)="filterByTag($event)" (changeTitle)="handleChangeTitle($event)"></theft-info>
+      <theft-info [theft]="theft"
+                  (selectTag)="filterByTag($event)"
+                  (changeTitle)="handleChangeTitle($event)"
+                  (theftDeleted)="handleTheftDeleted($event)"></theft-info>
     </div>
   </div>
 </div>

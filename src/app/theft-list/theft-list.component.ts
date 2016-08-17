@@ -34,6 +34,7 @@ export class TheftListComponent implements OnInit, DoCheck {
   @Input() thefts: Theft[]
   @Output() selectTheft = new EventEmitter()
   @Output() theftFilterChange = new EventEmitter()
+  @Output() theftDeleted = new EventEmitter()
 
   constructor(private theftService: TheftService, private el: ElementRef, private differs: KeyValueDiffers) {
     this.differ = differs.find({}).create(null)
@@ -185,6 +186,13 @@ export class TheftListComponent implements OnInit, DoCheck {
 
   findNearFormValid() {
     return !Number(this.latitudeValue) || !Number(this.longitudeValue)
+  }
+
+  handleTheftDeleted(event) {
+    console.log('///////////////////////')
+    console.log('I LIST OCMp');
+    console.log('///////////////////////')
+    this.theftDeleted.emit(event)
   }
 
 }

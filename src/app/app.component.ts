@@ -58,4 +58,12 @@ export class AppComponent implements OnInit {
     this.mapThefts = event
   }
 
+  theftDeleted(theft) {
+    console.log('///////////////////////')
+    console.log('THEFT DETLETD');
+    console.log('///////////////////////')
+    this.theftList = this.theftList.filter(t => t.id !== theft.id)
+    this.mapThefts = this.theftList.filter(t => t.id !== theft.id)
+  }
+
 }

@@ -41,5 +41,7 @@
     <button *ngIf="!editing" (click)="edit()">Edit</button>
     <button *ngIf="editing" (click)="cancel()">Cancel</button>
     <button [disabled]="!editFormIsValid()" *ngIf="editing" (click)="save()">Save</button>
+    <button (click)="delete()">Delete</button>
+    <button (click)="deleteConfirmed()" *ngIf="showDeleteConfirmation">Are you sure?</button>
   </div>
 </div>

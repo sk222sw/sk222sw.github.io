@@ -14,11 +14,13 @@ export class TheftInfoComponent {
   @ViewChild('tagInput') tagInput: ElementRef
   @Output() selectTag = new EventEmitter()
   @Output() changeTitle = new EventEmitter()
+  @Output() theftDeleted = new EventEmitter()
   originalTheft: Theft
   editing = false
   showError = false
   error: string
   addingTag = false
+  showDeleteConfirmation = false
 
   constructor(private theftService: TheftService) {}
 
@@ -80,6 +82,28 @@ export class TheftInfoComponent {
     this.theft = JSON.parse(JSON.stringify(this.originalTheft))
     this.editing = false
     this.changeTitle.emit(this.theft)
+  }
+
+  delete() {
+    this.showDeleteConfirmation = true
+  }
+
+  deleteConfirmed() {
+    this.theftService.delete(this.theft.id)
+      .subscribe(
+        data => {
+          console.log('///////////////////////')
+          console.log('data', data);
+          console.log('///////////////////////')
+          this.theftDeleted.emit(this.theft)
+        },
+        error => {
+          console.log('///////////////////////')
+          console.log('error', error);
+          console.log('///////////////////////')
+          this.errorHandler('Can\' delete theft. (Only the creator can)')
+        }
+      )
   }
 
 }
