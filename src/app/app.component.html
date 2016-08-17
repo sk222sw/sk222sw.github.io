@@ -4,6 +4,6 @@
 <a [routerLink]="['/login']">Login</a>
 <a [routerLink]="['/profile']">Profile</a>
 <flash></flash>
-<map-cmp [coordinates]="currentTheftCoordinates" (selectTheft)="selectTheft($event)"></map-cmp>
-<theft-list [thefts]="theftList" (selectTheft)="selectTheft($event)"></theft-list>
+<map-cmp [thefts]="mapThefts" [coordinates]="currentTheftCoordinates" (selectTheft)="selectTheft($event)"></map-cmp>
+<theft-list [thefts]="theftList" (theftFilterChange)="handleFilterChange($event)" (selectTheft)="selectTheft($event)"></theft-list>
 <router-outlet></router-outlet>

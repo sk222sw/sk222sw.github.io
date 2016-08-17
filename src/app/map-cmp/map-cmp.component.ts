@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core'
 import { GOOGLE_MAPS_PROVIDERS, GOOGLE_MAPS_DIRECTIVES } from 'angular2-google-maps/core'
 import { TheftService } from '../theft.service'
 
@@ -12,12 +12,12 @@ import { Marker, Theft } from '../interfaces'
   directives: [GOOGLE_MAPS_DIRECTIVES],
   providers: [TheftService],
 })
-export class MapCmpComponent implements OnInit {
+export class MapCmpComponent implements OnInit, DoCheck {
   private lat: number = 56
   private lon: number = 15
   private theftMarkers: Marker[] = []
   private showMap = false
-  @Input() thefts: Theft[] // tslint:disable-line
+  @Input() thefts: Theft[] = []
   @Output() selectTheft = new EventEmitter()
   @Input() coordinates: number[] = []
 
@@ -26,29 +26,16 @@ export class MapCmpComponent implements OnInit {
   getLat = () => this.lat
   getLon = () => this.lon
 
-  clickedMarker(label: any, index: number) {
-    this.theftService.getById(label.theftId)
-      .subscribe(
-        data => {
-          // this.selectTheft.emit(data['theft'])
-        }
-      )
-  }
-
   ngOnInit() {
-    this.getAllThefts()
   }
 
-  getAllThefts() {
-    this.theftService.getAll(100, 0)
-      .subscribe(
-        data => this.addToMarkers(data),
-        error => this.errorMessage = <any>error
-      )
+  ngDoCheck() {
+    if (typeof this.thefts === 'object') {
+      this.showMap = true
+    }
   }
 
-  addToMarkers(data: any) {
-    const thefts = data.thefts
+  addToMarkers(thefts: Theft[]) {
     for (let t of thefts) {
       if (t.position !== null) {
         const marker = {

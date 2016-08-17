@@ -30,6 +30,7 @@ export class TheftListComponent implements OnInit, DoCheck {
   differ: any
   @Input() thefts: Theft[]
   @Output() selectTheft = new EventEmitter()
+  @Output() theftFilterChange = new EventEmitter()
 
   constructor(private theftService: TheftService, private el: ElementRef, private differs: KeyValueDiffers) {
     this.differ = differs.find({}).create(null)
@@ -51,33 +52,33 @@ export class TheftListComponent implements OnInit, DoCheck {
     this.selectTheft.emit(event)
   }
 
-  getTheftList() {
-    this.theftService.getAll(this.limit, this.offset)
-      .subscribe(
-      data => this.setTheftList(data),
-      error => this.errorMessage = <any>error
-      )
-  }
+  // getTheftList() {
+  //   this.theftService.getAll(this.limit, this.offset)
+  //     .subscribe(
+  //     data => this.setTheftList(data),
+  //     error => this.errorMessage = <any>error
+  //     )
+  // }
 
-  setTheftList(data: any): void {
-    this.show = true
-    this.originalThefts = data.thefts
-    this.theftList = data.thefts
-  }
+  // setTheftList(data: any): void {
+  //   this.show = true
+  //   this.originalThefts = data.thefts
+  //   this.theftList = data.thefts
+  // }
 
-  nextPage() {
-    if (this.theftListCount < 10) return
+  // nextPage() {
+  //   if (this.theftListCount < 10) return
 
-    this.offset += this.limit
-    this.getTheftList()
-  }
+  //   this.offset += this.limit
+  //   this.getTheftList()
+  // }
 
-  previousPage() {
-    if (this.theftListCount === 0) return
+  // previousPage() {
+  //   if (this.theftListCount === 0) return
 
-    this.offset -= this.limit
-    this.getTheftList()
-  }
+  //   this.offset -= this.limit
+  //   this.getTheftList()
+  // }
 
   errorMessage(err: any) {
     console.error(err)
@@ -123,12 +124,14 @@ export class TheftListComponent implements OnInit, DoCheck {
     }
     this.filter = name
     this.thefts = filteredThefts
+    this.theftFilterChange.emit(this.thefts)
   }
 
   removeFilter() {
     this.thefts = this.originalThefts
     this.searchValue = ''
     this.filter = 'all'
+    this.theftFilterChange.emit(this.thefts)
   }
 
   search() {
@@ -143,6 +146,7 @@ export class TheftListComponent implements OnInit, DoCheck {
     const {thefts} = data
     this.filter = searchValue
     this.thefts = thefts
+    this.theftFilterChange.emit(this.thefts)
   }
 
 }

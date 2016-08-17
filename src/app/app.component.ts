@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   description: ''
   theft = {} as Theft
   theftList: Theft[]
+  mapThefts: Theft[]
   showList = true
   currentTheftCoordinates: number[] = []
 
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
       .subscribe(
         data => {
           this.theftList = data['thefts']
+          this.mapThefts = this.theftList
           this.showList = true
         },
         error => {
@@ -49,4 +51,9 @@ export class AppComponent implements OnInit {
     this.currentTheftCoordinates = [event.position.latitude, event.position.longitude]
     this.theft = event
   }
+
+  handleFilterChange(event) {
+    this.mapThefts = event
+  }
+
 }

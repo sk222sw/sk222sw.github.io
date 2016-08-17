@@ -1,18 +1,15 @@
 <div *ngIf="showMap" class="sebm-google-map-container">
   <sebm-google-map
-    [latitude]="coordinates[0] || theftMarkers[0].lat"
-    [longitude]="coordinates[1] || theftMarkers[0].lng"
+    [latitude]="coordinates[0] || thefts[0]?.position.latitude"
+    [longitude]="coordinates[1] || thefts[0]?.position.longitude"
     [zoom]="5">
     <sebm-google-map-marker
-        *ngFor="let m of theftMarkers; let i = index"
-        (markerClick)="clickedMarker(m, i)"
-        [latitude]="m.lat"
-        [longitude]="m.lng"
-        [label]="m.label"
-        [markerDraggable]="m.draggable"
-        (dragEnd)="markerDragEnd(m, $event)">
+        *ngFor="let theft of thefts; let i = index"
+        [latitude]="theft?.position.latitude"
+        [longitude]="theft?.position.longitude"
+        [markerDraggable]="false">
       <sebm-google-map-info-window>
-        <strong>{{m.content}}</strong>
+        <strong>{{theft.description}}</strong>
       </sebm-google-map-info-window>
     </sebm-google-map-marker>
   </sebm-google-map>

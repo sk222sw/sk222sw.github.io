@@ -18,6 +18,4 @@ Filter:
       <theft-info [theft]="theft" (selectTag)="filterByTag($event)" (changeTitle)="handleChangeTitle($event)"></theft-info>
     </div>
   </div>
-  <button *ngIf="offset > 0" (click)="previousPage()"><</button>
-  <button (click)="nextPage()">></button>
 </div>
