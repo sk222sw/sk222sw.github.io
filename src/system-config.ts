@@ -50,6 +50,7 @@ const barrels: string[] = [
   'app/map-cmp',
   'app/theft-list',
   'app/theft-info',
+  'app/create-theft',
   /** @cli-barrel */
 ]
 

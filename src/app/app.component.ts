@@ -6,6 +6,7 @@ import { TheftListComponent } from './theft-list'
 import { TheftInfoComponent } from './theft-info'
 import { Theft } from './interfaces/'
 import { TheftService } from './theft.service'
+import { CreateTheftComponent } from './create-theft'
 
 @Component({
   moduleId: module.id,
@@ -18,6 +19,7 @@ import { TheftService } from './theft.service'
     MapCmpComponent,
     TheftListComponent,
     TheftInfoComponent,
+    CreateTheftComponent,
   ],
   providers: [TheftService],
 })
@@ -59,9 +61,6 @@ export class AppComponent implements OnInit {
   }
 
   theftDeleted(theft) {
-    console.log('///////////////////////')
-    console.log('THEFT DETLETD');
-    console.log('///////////////////////')
     this.theftList = this.theftList.filter(t => t.id !== theft.id)
     this.mapThefts = this.theftList.filter(t => t.id !== theft.id)
   }

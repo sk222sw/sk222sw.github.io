@@ -189,9 +189,6 @@ export class TheftListComponent implements OnInit, DoCheck {
   }
 
   handleTheftDeleted(event) {
-    console.log('///////////////////////')
-    console.log('I LIST OCMp');
-    console.log('///////////////////////')
     this.theftDeleted.emit(event)
   }
 

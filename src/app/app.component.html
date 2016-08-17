@@ -5,6 +5,7 @@
 <a [routerLink]="['/profile']">Profile</a>
 <flash></flash>
 <map-cmp [thefts]="mapThefts" [coordinates]="currentTheftCoordinates" (selectTheft)="selectTheft($event)"></map-cmp>
+<create-theft></create-theft>
 <theft-list
   [thefts]="theftList"
   (theftFilterChange)="handleFilterChange($event)"

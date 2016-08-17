@@ -1,0 +1,25 @@
+<div>
+  <form (ngSubmit)="onSubmit()" #theftForm="ngForm">
+    <div>
+      <label for="description">Description</label>
+      <input type="text" id="description" required
+              [(ngModel)]="description" name="description">
+    </div>
+    <div>
+      <label for="date">Date</label>
+      <input type="date" id="date" required
+              [(ngModel)]="date" name="date">
+    </div>
+    <div>
+      <label for="latitude">latitude</label>
+      <input type="latitude" id="latitude" required
+              [(ngModel)]="latitude" name="latitude">
+    </div>
+    <div>
+      <label for="longitude">longitude</label>
+      <input type="longitude" id="longitude" required
+              [(ngModel)]="longitude" name="longitude">
+    </div>
+    <button type="submit" [disabled]="!formValid()">Submit</button>
+  </form>
+</div>

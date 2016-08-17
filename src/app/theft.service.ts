@@ -47,6 +47,30 @@ export class TheftService {
     return this.http.post(url, body, {headers})
   }
 
+  formatTheft(theft: Theft) {
+    return {
+      theft: {
+        description: theft.description,
+        time: theft.time,
+        latitude: theft.position.latitude,
+        longitude: theft.position.longitude,
+        tags: theft.tags,
+      },
+    }
+  }
+
+  formatCreateTheft(theft: Theft) {
+    return {
+      theft: {
+        description: theft.description,
+        time: theft.time,
+        latitude: theft.position.latitude,
+        longitude: theft.position.longitude,
+        tags: theft.tags,
+      },
+    }
+  }
+
   getAll(limit = 1000, offset = 0): Observable<Theft[]> {
     if (this.data) return Observable.of(this.extractData(this.data))
 
@@ -79,6 +103,10 @@ export class TheftService {
   }
 
   create(theft: any): Observable<Theft>  {
+    theft = this.formatCreateTheft(theft)
+    console.log('///////////////////////')
+    console.log(theft);
+    console.log('///////////////////////')
     return this.doPost(this.theftUrl, theft, this.getHeaders())
       .map(this.extractData)
       .catch(this.errorHandler)
@@ -91,15 +119,7 @@ export class TheftService {
   }
 
   update(theft: Theft, id: number): Observable<Theft> {
-    const formatedTheft = {
-      theft: {
-        description: theft.description,
-        time: theft.time,
-        latitude: theft.position.latitude,
-        longitude: theft.position.longitude,
-        tags: theft.tags,
-      },
-    }
+    const formatedTheft = this.formatTheft(theft)
     return this.http.put(`${this.theftUrl}${id}`, formatedTheft, {headers: this.getHeaders()})
       .map(this.extractData)
       .catch(this.errorHandler)
