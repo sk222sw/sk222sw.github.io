@@ -35,9 +35,15 @@ export class TheftInfoComponent {
           this.theft = data['theft']
           this.changeTitle.emit(this.theft)
         },
-        error => {this.errorHandler(error)}
+        error => this.errorHandler(error)
       )
     this.editing = false
+  }
+
+  editFormIsValid() {
+    return (this.theft.description !== ''
+        && Number(this.theft.position.latitude)
+        && Number(this.theft.position.longitude))
   }
 
   errorHandler(error) {
@@ -73,6 +79,7 @@ export class TheftInfoComponent {
   cancel() {
     this.theft = JSON.parse(JSON.stringify(this.originalTheft))
     this.editing = false
+    this.changeTitle.emit(this.theft)
   }
 
 }

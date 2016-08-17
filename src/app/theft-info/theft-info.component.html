@@ -40,6 +40,6 @@
   <div>
     <button *ngIf="!editing" (click)="edit()">Edit</button>
     <button *ngIf="editing" (click)="cancel()">Cancel</button>
-    <button *ngIf="editing" (click)="save()">Save</button>
+    <button [disabled]="!editFormIsValid()" *ngIf="editing" (click)="save()">Save</button>
   </div>
 </div>
