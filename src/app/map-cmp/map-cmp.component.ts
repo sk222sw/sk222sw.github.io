@@ -30,7 +30,7 @@ export class MapCmpComponent implements OnInit {
     this.theftService.getById(label.theftId)
       .subscribe(
         data => {
-          this.selectTheft.emit(data)
+          // this.selectTheft.emit(data['theft'])
         }
       )
   }

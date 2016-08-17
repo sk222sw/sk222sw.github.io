@@ -66,7 +66,8 @@ export class TheftService {
 
   // TODO: Returnerar konstigt
   getByDescription(description: string): Observable<Theft[]> {
-    return this.doGet(`${this.theftUrl}?${description}`, this.getHeaders())
+    const url = `${this.theftUrl}?description=${description}&limit=1000`
+    return this.doGet(url, this.getHeaders())
       .map(this.extractData)
       .catch(this.errorHandler)
   }

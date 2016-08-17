@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core'
+import { Component, OnInit, EventEmitter, Output, Input, ElementRef, KeyValueDiffers, DoCheck } from '@angular/core'
 import { TheftService } from '../theft.service'
 import { Theft } from '../interfaces'
 import { TheftInfoComponent } from '../theft-info'
@@ -13,7 +13,7 @@ import { TheftInfoComponent } from '../theft-info'
     TheftInfoComponent,
   ],
 })
-export class TheftListComponent implements OnInit {
+export class TheftListComponent implements OnInit, DoCheck {
   theftList: Theft[]
   limit = 10
   offset = 0
@@ -25,32 +25,43 @@ export class TheftListComponent implements OnInit {
   showingInfo = false
   theftTitles: Element[]
   filter = 'all'
-  allThefts: Theft[]
+  originalThefts: Theft[] = []
+  searchValue: string
+  differ: any
   @Input() thefts: Theft[]
+  @Output() selectTheft = new EventEmitter()
 
-  constructor(private theftService: TheftService, private el: ElementRef) {
-
+  constructor(private theftService: TheftService, private el: ElementRef, private differs: KeyValueDiffers) {
+    this.differ = differs.find({}).create(null)
   }
 
   ngOnInit() {
+  }
+
+  ngDoCheck() {
+    if (this.originalThefts.length === 0 && typeof this.thefts === 'object') {
+      this.originalThefts = this.thefts
+    }
   }
 
   get theftListCount() { return this.theftList.length }
 
   handleSelectTheft(event) {
     this.expandTheft(event.id)
+    this.selectTheft.emit(event)
   }
 
   getTheftList() {
     this.theftService.getAll(this.limit, this.offset)
       .subscribe(
-        data => this.setTheftList(data),
-        error => this.errorMessage = <any>error
+      data => this.setTheftList(data),
+      error => this.errorMessage = <any>error
       )
   }
 
   setTheftList(data: any): void {
     this.show = true
+    this.originalThefts = data.thefts
     this.theftList = data.thefts
   }
 
@@ -105,18 +116,33 @@ export class TheftListComponent implements OnInit {
   filterByTag(event) {
     const {name} = event
     const filteredThefts = []
-    for (let theft of this.thefts) {
+    for (let theft of this.originalThefts) {
       for (let tag of theft.tags) {
         if (tag.name === name) filteredThefts.push(theft)
       }
     }
     this.filter = name
-    this.allThefts = this.thefts
     this.thefts = filteredThefts
   }
 
-  removeTagFilter() {
-    this.thefts = this.allThefts
+  removeFilter() {
+    this.thefts = this.originalThefts
+    this.searchValue = ''
+    this.filter = 'all'
+  }
+
+  search() {
+    this.theftService.getByDescription(this.searchValue)
+      .subscribe(
+        data => this.handleSearch(data, this.searchValue),
+        error => this.errorMessage = <any>error
+      )
+  }
+
+  handleSearch(data: any, searchValue: string) {
+    const {thefts} = data
+    this.filter = searchValue
+    this.thefts = thefts
   }
 
 }

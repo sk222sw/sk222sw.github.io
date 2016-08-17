@@ -45,8 +45,8 @@ export class AppComponent implements OnInit {
       )
   }
 
-  selectTheft(event) {
+  selectTheft(event: Theft) {
     this.currentTheftCoordinates = [event.position.latitude, event.position.longitude]
-    this.theft = event.theft || event
+    this.theft = event
   }
 }
