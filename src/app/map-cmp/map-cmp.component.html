@@ -2,7 +2,8 @@
   <sebm-google-map
     [latitude]="coordinates[0] || thefts[0]?.position.latitude"
     [longitude]="coordinates[1] || thefts[0]?.position.longitude"
-    [zoom]="5">
+    [zoom]="3"
+    >
     <sebm-google-map-marker
         *ngFor="let theft of thefts; let i = index"
         [latitude]="theft?.position.latitude"

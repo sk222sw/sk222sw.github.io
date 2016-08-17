@@ -64,7 +64,6 @@ export class TheftService {
       .catch(this.errorHandler)
   }
 
-  // TODO: Returnerar konstigt
   getByDescription(description: string): Observable<Theft[]> {
     const url = `${this.theftUrl}?description=${description}&limit=1000`
     return this.doGet(url, this.getHeaders())
@@ -72,9 +71,8 @@ export class TheftService {
       .catch(this.errorHandler)
   }
 
-  // TODO: Returnerar alla
-  getNear(position: Position): Observable<Theft[]> {
-    const url = `${this.theftUrl}?thefts_near=${position.latitude},${position.longitude}`
+  getNear(latitude: number, longitude: number): Observable<Theft[]> {
+    const url = `${this.theftUrl}?thefts_near=${latitude},${longitude}`
     return this.doGet(url, this.getHeaders())
       .map(this.extractData)
       .catch(this.errorHandler)

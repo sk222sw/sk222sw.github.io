@@ -2,11 +2,23 @@ Filter:
 <span *ngIf="filter === 'all'">{{filter}}</span>
 <span (click)="removeFilter()" *ngIf="filter !== 'all'">{{filter}}</span>
 <hr>
+<div>
+  {{errorMessage}}
+  <button [hidden]="!errorMessage" (click)="errorMessage = ''">Hide</button>
+</div>
 <form (ngSubmit)="search()">
   <label for="search">Search</label>
   <input [(ngModel)]="searchValue" name="search" type="text">
-  <button type="submit">Search</button>
+  <button [disabled]="!searchValue" type="submit">Search</button>
 </form>
+<hr>
+  <form (ngSubmit)="findNear()">
+    <label for="latitude">Latitude</label>
+    <input [(ngModel)]="latitudeValue" name="latitude" type="text">
+    <label for="longitude">Longitude</label>
+    <input [(ngModel)]="longitudeValue" name="longitude" type="text">
+    <button [disabled]="findNearFormValid()" type="submit">Find near</button>
+  </form>
 <hr>
 <div *ngIf="show">
   <div *ngFor="let theft of thefts">

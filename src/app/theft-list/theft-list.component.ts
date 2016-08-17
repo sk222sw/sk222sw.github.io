@@ -28,6 +28,9 @@ export class TheftListComponent implements OnInit, DoCheck {
   originalThefts: Theft[] = []
   searchValue: string
   differ: any
+  latitudeValue: any
+  longitudeValue: any
+  errorMessage = ''
   @Input() thefts: Theft[]
   @Output() selectTheft = new EventEmitter()
   @Output() theftFilterChange = new EventEmitter()
@@ -80,8 +83,9 @@ export class TheftListComponent implements OnInit, DoCheck {
   //   this.getTheftList()
   // }
 
-  errorMessage(err: any) {
+  handleError(err: any) {
     console.error(err)
+    this.errorMessage = err
   }
 
   expandTheft(id: number) {
@@ -134,19 +138,53 @@ export class TheftListComponent implements OnInit, DoCheck {
     this.theftFilterChange.emit(this.thefts)
   }
 
-  search() {
+  search(event) {
     this.theftService.getByDescription(this.searchValue)
       .subscribe(
         data => this.handleSearch(data, this.searchValue),
-        error => this.errorMessage = <any>error
+        error => this.handleError('Server error, try again later.')
       )
   }
 
   handleSearch(data: any, searchValue: string) {
     const {thefts} = data
+    if (!thefts.length) {
+      this.handleError('No thefts were found')
+      return
+    }
     this.filter = searchValue
     this.thefts = thefts
     this.theftFilterChange.emit(this.thefts)
+  }
+
+  findNear() {
+    this.theftService.getNear(this.latitudeValue, this.longitudeValue)
+      .subscribe(
+        data => {
+          const nearTheftIds = data['thefts']
+          const nearThefts: Theft[] = []
+          if (typeof nearTheftIds !== 'object') {
+            this.handleError('No nearby thefts found')
+            return
+          }
+          this.originalThefts.forEach(theft => {
+            if (nearTheftIds.indexOf(theft.id) > -1) {
+              nearThefts.push(theft)
+            }
+          })
+          this.thefts = nearThefts
+          this.theftFilterChange.emit(this.thefts)
+          this.filter = `Latitude: ${this.latitudeValue}, Longitude: ${this.longitudeValue}`
+        },
+        error => {
+          this.handleError('No nearby thefts found')
+          return
+        }
+      )
+  }
+
+  findNearFormValid() {
+    return !Number(this.latitudeValue) || !Number(this.longitudeValue)
   }
 
 }

@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   theftList: Theft[]
   mapThefts: Theft[]
   showList = true
+  zoom: number = 1
   currentTheftCoordinates: number[] = []
 
   constructor(private theftService: TheftService) {
@@ -53,6 +54,7 @@ export class AppComponent implements OnInit {
   }
 
   handleFilterChange(event) {
+    this.zoom = 3
     this.mapThefts = event
   }
 
