@@ -1,0 +1,65 @@
+<div class="theft-form-container">
+<button *ngIf="!show" (click)="showForm()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button>
+<div *ngIf="show" class="demo-card-wide mdl-card mdl-shadow--2dp">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Create theft</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+  <form #theftForm>
+    <div class="input-container">
+      <label  for="description">Description (letters)</label>
+      <input  class="mdl-textfield__input"
+              type="text"
+              id="description"
+              required
+              [(ngModel)]="description"
+              name="description"
+              pattern="[A-Z,a-z,ÅÄÖåäö ]*">
+    </div>
+    <div class="input-container">
+      <label  for="date">Date</label>
+      <input  class="mdl-textfield__input"
+              type="date"
+              id="date"
+              required
+              [(ngModel)]="date" name="date">
+    </div>
+    <div class="input-container">
+      <label  for="latitude">latitude (number)</label>
+      <input  class="mdl-textfield__input"
+              type="number" id="latitude" required
+              [(ngModel)]="latitude" name="latitude"
+              pattern="-?[0-9]*(\.[0-9]+)?">
+    </div>
+    <div class="input-container">
+      <label  for="longitude">longitude (number)</label>
+      <input  class="mdl-textfield__input"
+              type="number" id="longitude" required
+              [(ngModel)]="longitude" name="longitude"
+              pattern="-?[0-9]*(\.[0-9]+)?">
+    </div>
+    <div class="input-container">
+      <label  for="tags">Tags (comma separated)</label>
+      <input  class="tag-input mdl-textfield__input"
+              type="text"
+              [(ngModel)]="tags" name="tags"
+              pattern="[A-Z,a-z, ]*">
+    </div>
+  </form>
+  </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                type="submit"
+                [disabled]="!formValid()"
+                (click)="onSubmit($event)">
+                Submit</button>
+    </div>
+    <div class="mdl-card__menu">
+      <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+        <i class="material-icons" (click)="closeForm()">close</i>
+      </button>
+    </div>
+  </div>
+</div>

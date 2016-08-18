@@ -8,6 +8,7 @@
 /** Map relative paths to URLs. */
 var map = {
     'angular2-google-maps': 'vendor/angular2-google-maps',
+    'angular2-mdl': 'vendor/angular2-mdl',
 };
 /** User packages configuration. */
 var packages = {
@@ -15,6 +16,7 @@ var packages = {
         defaultExtension: 'js',
         main: 'index.js',
     },
+    'angular2-mdl': { main: 'dist/components/index.js' },
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /***********************************************************************************************
@@ -44,6 +46,7 @@ var barrels = [
     'app/map-cmp',
     'app/theft-list',
     'app/theft-info',
+    'app/create-theft',
 ];
 var cliSystemConfigPackages = {};
 barrels.forEach(function (barrelName) {
