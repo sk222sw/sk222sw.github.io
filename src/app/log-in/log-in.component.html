@@ -1,21 +1,18 @@
 <div class="container">
   <form (ngSubmit)="onSubmit()">
-    <div>
+    <div class="mdl-textfield mdl-js-textfield">
       <label for="email">email</label>
-      <input type="text" class="form-control" required
+      <input class="mdl-textfield__input" type="text" type="text" required
         [(ngModel)]="model.email"
-          name="email"  #email >
-      <!--<div [hidden]="email.valid || email.pristine" class="alert alert-danger">-->
-      <!--  Email is required-->
-      <!--</div>-->
+          name="email" #email >
     </div>
     <div>
       <label for="password">password</label>
-      <input [(ngModel)]="model.password" type="text" name="password" required>
+      <input class="mdl-textfield__input" [(ngModel)]="model.password" type="text" name="password" required>
     </div>
-    <input type="submit" value="Submit"/>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+      Login
+    </button>
   </form>
   <flash [error]="errorMessage"></flash>
 </div>
-
-<!--https://angular.io/docs/ts/latest/guide/forms.html-->

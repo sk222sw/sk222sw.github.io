@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Output, EventEmitter, ElementRef } from '@angular/core'
 import { TheftService } from '../theft.service'
 import { Theft, Tag } from '../interfaces'
 
@@ -16,12 +16,27 @@ export class CreateTheftComponent {
   date: any
   latitude: number
   longitude: number
-  tags: Tag[] = []
+  tags = []
+  show = false
+  @Output() theftCreated = new EventEmitter()
 
-  constructor(private theftService: TheftService) { }
+  constructor(private theftService: TheftService, private el: ElementRef) { }
 
-  onSubmit() {
-    console.log(this.date)
+  createTags() {
+    const tagString = this.el.nativeElement.querySelector('.tag-input').value
+    const tags = tagString.split(',')
+    const tagList = []
+    if (!tags.length || tags[0] === '') return
+    tags.forEach(tag => {
+      tagList.push({name: tag})
+    })
+    this.tags = tagList
+  }
+
+  onSubmit(event) {
+
+    this.createTags()
+
     const theft = {
       description: this.description,
       time: this.date,
@@ -34,7 +49,13 @@ export class CreateTheftComponent {
     this.theftService.create(theft)
       .subscribe(
         data => {
-          console.log("data", data)
+          this.theftCreated.emit(data['theft'])
+          this.closeForm()
+          this.description = ''
+          this.date = ''
+          this.latitude = null
+          this.longitude = null
+          this.el.nativeElement.querySelector('.tag-input').value = null
         }, error => {
           console.error("errir", error)
         }
@@ -42,8 +63,19 @@ export class CreateTheftComponent {
   }
 
   formValid() {
-    // const date = this.date.spli('-')
-    return this.description !== '' && Number(this.latitude) && Number(this.longitude)
+    return (
+      this.description !== ''
+      && Number(this.latitude)
+      && Number(this.longitude)
+      && this.date != null)
+  }
+
+  closeForm() {
+    this.show = false
+  }
+
+  showForm() {
+    this.show = true
   }
 
 }

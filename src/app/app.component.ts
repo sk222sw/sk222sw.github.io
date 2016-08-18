@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ElementRef } from '@angular/core'
 import { ROUTER_DIRECTIVES } from '@angular/router'
 import { LogInComponent } from './log-in'
 import { MapCmpComponent } from './map-cmp'
@@ -32,8 +32,10 @@ export class AppComponent implements OnInit {
   showList = true
   zoom: number = 1
   currentTheftCoordinates: number[] = []
+  message = 'snackbar'
+  showSnackbar = false
 
-  constructor(private theftService: TheftService) {
+  constructor(private theftService: TheftService, private el: ElementRef) {
   }
 
   ngOnInit() {
@@ -63,6 +65,24 @@ export class AppComponent implements OnInit {
   theftDeleted(theft) {
     this.theftList = this.theftList.filter(t => t.id !== theft.id)
     this.mapThefts = this.theftList.filter(t => t.id !== theft.id)
+    this.snackbar('Theft deleted')
+  }
+
+  theftCreated(theft: Theft) {
+    this.theftList.unshift(theft)
+    this.mapThefts.unshift(theft)
+    this.snackbar('Theft created')
+  }
+
+  snackbar(message: string) {
+    const snackbar = this.el.nativeElement.querySelector('.snackbar')
+    snackbar.classList.add('higher-snackbar')
+    this.message = message
+    this.showSnackbar = true
+    setTimeout(() => {
+      snackbar.classList.remove('higher-snackbar')
+      this.showSnackbar = false
+    }, 2500)
   }
 
 }

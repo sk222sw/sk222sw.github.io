@@ -7,6 +7,8 @@ import { TheftService } from '../theft.service'
   selector: 'theft-info',
   templateUrl: 'theft-info.component.html',
   styleUrls: ['theft-info.component.css'],
+  directives: [
+  ],
   providers: [TheftService],
 })
 export class TheftInfoComponent {

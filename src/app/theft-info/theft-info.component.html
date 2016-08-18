@@ -1,8 +1,7 @@
 <div class="theft-info-theft">
+  <hr>
   <div>
-    {{theft.id}}
     <div *ngIf="!editing">
-      {{theft.description}}
     </div>
     <input *ngIf="editing" type="text" [(ngModel)]="theft.description" value="{{theft.description}}">
   </div>
@@ -27,8 +26,8 @@
   </div>
   Tags:
   <div *ngFor="let tag of theft?.tags">
-    <button (click)="getTheftsByTag(tag)">{{tag?.name}}</button>
-    <button *ngIf="editing" (click)="deleteTag(tag)">x</button>
+    <a (click)="getTheftsByTag(tag)">{{tag?.name}}</a>
+    <button class="mdl-button mdl-js-button mdl-button--raised" *ngIf="editing" (click)="deleteTag(tag)">x</button>
   </div>
   <button *ngIf="!addingTag" (click)="addTag()">+</button>
   <input #tagInput *ngIf="addingTag" type="text" placeholder="New tag" value="">
@@ -38,10 +37,10 @@
     <button (click)="showError = false">hide</button>
   </div>
   <div>
-    <button *ngIf="!editing" (click)="edit()">Edit</button>
-    <button *ngIf="editing" (click)="cancel()">Cancel</button>
-    <button [disabled]="!editFormIsValid()" *ngIf="editing" (click)="save()">Save</button>
-    <button (click)="delete()">Delete</button>
-    <button (click)="deleteConfirmed()" *ngIf="showDeleteConfirmation">Are you sure?</button>
+    <button class="mdl-button mdl-js-button mdl-button--raised" *ngIf="!editing" (click)="edit()">Edit</button>
+    <button class="mdl-button mdl-js-button mdl-button--raised" *ngIf="editing" (click)="cancel()">Cancel</button>
+    <button class="mdl-button mdl-js-button mdl-button--raised" [disabled]="!editFormIsValid()" *ngIf="editing" (click)="save()">Save</button>
+    <button class="mdl-button mdl-js-button mdl-button--raised" (click)="delete()">Delete</button>
+    <button class="mdl-button mdl-js-button mdl-button--raised"  (click)="deleteConfirmed()" *ngIf="showDeleteConfirmation">Are you sure?</button>
   </div>
 </div>

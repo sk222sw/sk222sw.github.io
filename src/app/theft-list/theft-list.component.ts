@@ -3,6 +3,7 @@ import { TheftService } from '../theft.service'
 import { Theft } from '../interfaces'
 import { TheftInfoComponent } from '../theft-info'
 
+
 @Component({
   moduleId: module.id,
   selector: 'theft-list',
@@ -17,7 +18,7 @@ export class TheftListComponent implements OnInit, DoCheck {
   theftList: Theft[]
   limit = 10
   offset = 0
-  show = true
+  show = false
   theftInfo: Theft
   showTheftInfo = false
   theftElements: Element[]
@@ -31,6 +32,10 @@ export class TheftListComponent implements OnInit, DoCheck {
   latitudeValue: any
   longitudeValue: any
   errorMessage = ''
+  showFilters = false
+  showSearchByDescription = false
+  showSearchByPosition = false
+
   @Input() thefts: Theft[]
   @Output() selectTheft = new EventEmitter()
   @Output() theftFilterChange = new EventEmitter()
@@ -38,6 +43,34 @@ export class TheftListComponent implements OnInit, DoCheck {
 
   constructor(private theftService: TheftService, private el: ElementRef, private differs: KeyValueDiffers) {
     this.differ = differs.find({}).create(null)
+  }
+
+  closeTheftList() {
+    this.show = false
+  }
+
+  doShowTheftList() {
+    this.show = true
+  }
+
+  filterShow() {
+    this.showFilters = true
+  }
+
+  filterHide() {
+    this.showFilters = false
+    this.showSearchByDescription = false
+    this.showSearchByPosition = false
+  }
+
+  searchByPositionToggle() {
+    this.showSearchByPosition = !this.showSearchByPosition
+    this.showSearchByDescription = false
+  }
+
+  searchByDescriptionToggle() {
+    this.showSearchByDescription = !this.showSearchByDescription
+    this.showSearchByPosition = false
   }
 
   ngOnInit() {

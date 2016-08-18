@@ -25,8 +25,6 @@ export class UserService {
   }
 
   login(email: string, password: string) {
-    email = 'so@nny.com'
-    password = 'hej'
     const body = {auth: {email, password}}
     return this.doPost(this.authUrl, this.getHeaders(), body)
   }

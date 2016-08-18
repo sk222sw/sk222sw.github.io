@@ -1,14 +1,31 @@
-<h1>
-  {{title}}
-</h1>
-<a [routerLink]="['/login']">Login</a>
-<a [routerLink]="['/profile']">Profile</a>
-<flash></flash>
-<map-cmp [thefts]="mapThefts" [coordinates]="currentTheftCoordinates" (selectTheft)="selectTheft($event)"></map-cmp>
-<create-theft></create-theft>
-<theft-list
-  [thefts]="theftList"
-  (theftFilterChange)="handleFilterChange($event)"
-  (selectTheft)="selectTheft($event)"
-  (theftDeleted)="theftDeleted($event)"></theft-list>
-<router-outlet></router-outlet>
+<div>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <span class="mdl-layout-title">{{title}}</span>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
+          <a [routerLink]="['/login']" class="mdl-navigation__link" href="">Login</a>
+        </nav>
+      </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">{{title}}</span>
+      <nav class="mdl-navigation">
+      </nav>
+    </div>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        <map-cmp [thefts]="mapThefts" [coordinates]="currentTheftCoordinates" (selectTheft)="selectTheft($event)"></map-cmp>
+        <create-theft (theftCreated)="theftCreated($event)"></create-theft>
+        <theft-list [thefts]="theftList" (theftFilterChange)="handleFilterChange($event)" (selectTheft)="selectTheft($event)" (theftDeleted)="theftDeleted($event)"></theft-list>
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+  <div class="snackbar">
+    <button #snackbar *ngIf="showSnackbar" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+      {{message}}
+    </button>
+  </div>
+</div>
