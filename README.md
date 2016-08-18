@@ -1,31 +1,23 @@
-# Bta
+# Bike theft auto
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.10.
+## Komma igång
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Testköra
+För att testköra applikationen kan man gå till [biketheftauto](http://biketheft.azurewebsites.net/). Notera dock att API:et hostas på Heroku, och att det hamnar i viloläge när det inte använts på ett tag, därför kan de dröja lite innan kartan och resurserna laddas.
 
-## Code scaffolding
+### Bygga
+1. Skaffa [node](https://nodejs.org/en/) och [npm](https://www.npmjs.com/) (följer med node). Jag har kört node i version 5.5 och npm i version 3.3. Det finns lite olika [versionshanterare](https://github.com/tj/n) för node om man vill byta smidigt.
+2. Kör sedan `npm install -g angular-cli` för att installera [ng-cli](https://github.com/angular/angular-cli).
+3. Installera [typescript](https://www.typescriptlang.org/) `npm install -g typescript`
+4. Klona det här projektet från github.
+5. Gå till mappen dit du klonade och kör `npm i` för att installera dependencies.
+6. Kör `ng serve` för att starta utvecklingsmiljön
+7. Öppna [localhost:4200](localhost:4200)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/route/class`.
+### OBS
+Eftersom Angular 2 fortfarande är i betastadiet så kan det uppstå lite [SNAFU](http://www.urbandictionary.com/define.php?term=SNAFU) med nya versioner osv. Jag har låst versionerna i min package.json-fil och det bör fungera. Skulle något ändå göra att det inte funkar så finns det en [byggd version här](https://drive.google.com/drive/folders/0Bx3ukLUfYv-3M2xaZTVRRzhZanc?usp=sharing) om man väldigt gärna vill köra det lokalt.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/). 
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Deploying to Github Pages
-
-Run `ng github-pages:deploy` to deploy to Github Pages.
-
-## Further help
-
-To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Ändringar i API:et från labb2  
+Jag fick lite problem med att lägga till positioner. Det funkade när jag gjorde labb 2, men nu var jag tvungen att skriva om det lite grann, det var dock ingen större ändring. 
+  
+I övrigt så märkte jag att det jag vill ha i bodyn när man skapar en resurs blev lite klumpigt. API:et förväntar sig { resurs: { data... } }, men det mest bekväma hade såklart varit att kunna skicka in { data... }. Jag har dock inte ändrat detta i mitt API utan formaterar istället min data själv.
