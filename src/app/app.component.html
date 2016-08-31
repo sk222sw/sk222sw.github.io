@@ -5,7 +5,9 @@
         <span class="mdl-layout-title">{{title}}</span>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation mdl-layout--large-screen-only">
-          <a [routerLink]="['/login']" class="mdl-navigation__link" href="">Login</a>
+          <a [routerLink]="['/thefts']" class="mdl-navigation__link" href="">Thefts</a>
+          <a *ngIf="!loggedIn" [routerLink]="['/login']" class="mdl-navigation__link" href="">Login</a>
+          <a *ngIf="loggedIn" [routerLink]="['/']" (click)="logOut()" class="mdl-navigation__link" href="">Logout</a>
         </nav>
       </div>
     </header>
@@ -16,10 +18,10 @@
     </div>
     <main class="mdl-layout__content">
       <div class="page-content">
-        <map-cmp [thefts]="mapThefts" [coordinates]="currentTheftCoordinates" (selectTheft)="selectTheft($event)"></map-cmp>
-        <create-theft (theftCreated)="theftCreated($event)"></create-theft>
-        <theft-list [thefts]="theftList" (theftFilterChange)="handleFilterChange($event)" (selectTheft)="selectTheft($event)" (theftDeleted)="theftDeleted($event)"></theft-list>
-        <router-outlet></router-outlet>
+        <map-cmp [thefts]="theftList" [coordinates]="currentTheftCoordinates" (selectTheft)="selectTheft($event)"></map-cmp>
+        <div class="outlet-content">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </main>
   </div>

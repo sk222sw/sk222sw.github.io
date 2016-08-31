@@ -1,7 +1,7 @@
 <div *ngIf="showMap" class="sebm-google-map-container">
   <sebm-google-map
-    [latitude]="coordinates[0] || thefts[0]?.position.latitude"
-    [longitude]="coordinates[1] || thefts[0]?.position.longitude"
+    [latitude]="coordinates[0] || 1"
+    [longitude]="coordinates[1] || 1"
     [zoom]="3"
     >
     <sebm-google-map-marker

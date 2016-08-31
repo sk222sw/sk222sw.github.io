@@ -1,6 +1,8 @@
 import { Component, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core'
+import { ROUTER_DIRECTIVES } from '@angular/router'
 import { Theft, Tag } from '../interfaces'
 import { TheftService } from '../theft.service'
+import { Broadcaster } from '../broadcaster'
 
 @Component({
   moduleId: module.id,
@@ -8,6 +10,7 @@ import { TheftService } from '../theft.service'
   templateUrl: 'theft-info.component.html',
   styleUrls: ['theft-info.component.css'],
   directives: [
+    ROUTER_DIRECTIVES,
   ],
   providers: [TheftService],
 })
@@ -24,7 +27,7 @@ export class TheftInfoComponent {
   addingTag = false
   showDeleteConfirmation = false
 
-  constructor(private theftService: TheftService) {}
+  constructor(private theftService: TheftService, private broadcaster: Broadcaster) {}
 
   edit(event) {
     this.originalTheft = JSON.parse(JSON.stringify(this.theft))
@@ -44,6 +47,10 @@ export class TheftInfoComponent {
     this.editing = false
   }
 
+  broadcastTagName(name: string) {
+    this.broadcaster.broadcast('TagName', name)
+  }
+
   editFormIsValid() {
     return (this.theft.description !== ''
         && Number(this.theft.position.latitude)
@@ -58,6 +65,11 @@ export class TheftInfoComponent {
 
   getTheftsByTag(tag: Tag) {
     this.selectTag.emit(tag)
+  }
+
+  selectTheft(theft) {
+    theft.preventDefault()
+    this.broadcaster.broadcast('AllThefts', [theft])
   }
 
   isInArray(value, array) {
@@ -94,18 +106,16 @@ export class TheftInfoComponent {
     this.theftService.delete(this.theft.id)
       .subscribe(
         data => {
-          console.log('///////////////////////')
-          console.log('data', data);
-          console.log('///////////////////////')
           this.theftDeleted.emit(this.theft)
         },
         error => {
-          console.log('///////////////////////')
-          console.log('error', error);
-          console.log('///////////////////////')
-          this.errorHandler('Can\' delete theft. (Only the creator can)')
+          this.errorHandler('Can\'t delete theft. (Only the creator can)')
         }
       )
+  }
+
+  goBack() {
+    window.history.back()
   }
 
 }

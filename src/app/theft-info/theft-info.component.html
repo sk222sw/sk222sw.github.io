@@ -1,4 +1,35 @@
-<div class="theft-info-theft">
+<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Theft</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <div *ngIf="!theft" class="mdl-spinner mdl-js-spinner is-active"></div>
+    <div>
+      <div>
+        {{theft?.description}}
+      </div>
+      <div>
+        {{theft?.time}}
+      </div>
+      <div>
+        {{theft?.position?.address}}
+      </div>
+      <hr>
+      Tags
+      <div *ngFor="let tag of theft?.tags">
+        <a [routerLink]="['/', 'tags', tag.id]" (click)="broadcastTagName(tag.name)">{{tag?.name}}</a>
+        <button class="mdl-button mdl-js-button mdl-button--raised" *ngIf="editing" (click)="deleteTag(tag)">x</button>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-card__menu">
+    <div (click)="goBack()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+      <i class="material-icons">close</i>
+    </div>
+  </div>
+</div>
+
+<!--<div class="theft-info-theft">
   <hr>
   <div>
     <div *ngIf="!editing">
@@ -43,4 +74,4 @@
     <button class="mdl-button mdl-js-button mdl-button--raised" (click)="delete()">Delete</button>
     <button class="mdl-button mdl-js-button mdl-button--raised"  (click)="deleteConfirmed()" *ngIf="showDeleteConfirmation">Are you sure?</button>
   </div>
-</div>
+</div>-->

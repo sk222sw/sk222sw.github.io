@@ -1,10 +1,16 @@
-<div *ngIf="showFilters || filter !== 'all'">
+<div>
+  {{errorMessage}}
+  <button [hidden]="!errorMessage" (click)="errorMessage = ''">Hide</button>
+</div>
+<div *ngIf="showList">
   <div class="demo-card-wide mdl-card mdl-shadow--2dp">
     <div class="mdl-card__title">
-      <h2 class="mdl-card__title-text">Filter</h2>
+      <h2 class="mdl-card__title-text">Thefts</h2>
     </div>
     <div class="mdl-card__supporting-text">
-      <button (click)="searchByDescriptionToggle()" *ngIf="!showSearhByDescription" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+      <div *ngIf="!thefts" class="mdl-spinner mdl-js-spinner is-active"></div>
+      <button *ngIf="thefts" (click)="removeFilter()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">{{filter || 'All'}}</button>
+<button (click)="searchByDescriptionToggle()" *ngIf="!showSearhByDescription" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
         <i class="material-icons">description</i>
       </button>
       <button (click)="searchByPositionToggle()" *ngIf="!showSearhByPosition" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
@@ -24,58 +30,40 @@
         <br>
         <button [disabled]="findNearFormValid()" type="submit">Find near</button>
       </form>
-    </div>
-    <div class="mdl-card__actions mdl-card--border">
-  Filter:
-  <button (click)="removeFilter()" *ngIf="filter !== 'all'" type="button" class="mdl-chip">
-      <button class="mdl-chip__text">{{filter}}</button>
-  </button>
-  <span *ngIf="filter === 'all'">{{filter}}</span>
-    </div>
-    <div class="mdl-card__menu">
-      <button (click)="filterHide()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-        <i class="material-icons">close</i>
-      </button>
-    </div>
-  </div>
-</div>
-
-<button (click)="filterShow()" *ngIf="!showFilters" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-  <i class="material-icons">search</i>
-</button>
-
-<div>
-  {{errorMessage}}
-  <button [hidden]="!errorMessage" (click)="errorMessage = ''">Hide</button>
-</div>
-<button *ngIf="!show" (click)="doShowTheftList()" class="theft-list-button mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-  <i class="material-icons">list</i>
-</button>
-<div *ngIf="show">
-  <div class="demo-card-wide mdl-card mdl-shadow--2dp">
-    <div class="mdl-card__title">
-      <h2 class="mdl-card__title-text">Thefts</h2>
-    </div>
-    <div class="mdl-card__supporting-text">
-      <div *ngFor="let theft of thefts">
-        <div (click)="handleSelectTheft(theft)"
-            class="theft-title theft-title-{{theft.id}}">
-          {{theft.description}}
+        <div class="demo-list-action mdl-list">
+          <div *ngFor="let theft of thefts" class="mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+              <i class="material-icons mdl-list__item-avatar bike-icon">directions_bike</i>
+              <span class="theft-span">
+                <button
+                  class="theft-title theft-title-{{theft.id}}"
+                  (click)="theftSelected(theft)">
+                  {{theft?.description}}
+                </button>
+              </span>
+            </span>
+            <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">create</i></a>
+            <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">delete</i></a>
+          </div>
         </div>
-        <div class="expand-info id-{{theft.id}} hidden">
-          <theft-info [theft]="theft"
-                      (selectTag)="filterByTag($event)"
-                      (changeTitle)="handleChangeTitle($event)"
-                      (theftDeleted)="handleTheftDeleted($event)"></theft-info>
-        </div>
+
+      <div>
+
+
       </div>
     </div>
     <div class="mdl-card__menu">
-      <button (click)="closeTheftList()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-        <i class="material-icons">close</i>
-      </button>
+      <div class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+        <i class="material-icons">search</i>
+      </div>
     </div>
   </div>
+</div>
+<div *ngIf="!showList">
+  <theft-info [theft]="theftInfo"
+              (selectTag)="filterByTag($event)"
+              (changeTitle)="handleChangeTitle($event)"
+              (theftDeleted)="handleTheftDeleted($event)"></theft-info>
 </div>
 
 

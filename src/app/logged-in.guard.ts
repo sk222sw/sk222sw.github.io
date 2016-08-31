@@ -7,7 +7,13 @@ export class LoggedInGuard implements CanActivate {
   constructor(private user: UserService) {}
 
   canActivate() {
-    console.log(this.user.isLoggedIn())
     return this.user.isLoggedIn()
   }
+
+  alreadyLoggedIn() {
+    if (this.user.isLoggedIn()) {
+      return false
+    }
+  }
+
 }

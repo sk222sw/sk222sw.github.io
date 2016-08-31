@@ -18,12 +18,12 @@ import { FlashComponent } from '../flash'
 export class LogInComponent implements OnInit {
   model = new User('', '')
   name: string
-  @Output() flashMessage = new EventEmitter()
   private errorMessage: string
 
   constructor(
     private userService: UserService,
-    private router: Router) { }
+    private router: Router) {
+  }
 
   onSubmit() {
     const { email, password } = this.model
@@ -35,7 +35,7 @@ export class LogInComponent implements OnInit {
         data => {
           const {jwt} = JSON.parse(data)
           this.userService.loginSuccess(jwt)
-          this.router.navigate([''])
+          this.router.navigate(['/'])
         },
         err => {
           this.errorMessage = 'Login failed'

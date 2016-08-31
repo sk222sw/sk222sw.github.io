@@ -1,3 +1,6 @@
+.outlet-content {
+  padding-top: 20px;
+}
 
 .snackbar {
   position: absolute;
@@ -16,4 +19,8 @@
 .higher-snackbar {
 
   right: 100px;
+}
+
+.demo-list-action {
+  width: 300px;
 }

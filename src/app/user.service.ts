@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, EventEmitter } from '@angular/core'
 import { Http, Headers } from '@angular/http'
 import 'rxjs/add/operator/toPromise'
 
@@ -9,14 +9,19 @@ export class UserService {
   private apiKey: string = 'Z-QJ43o-1yrXmb_NRFJCtQ'
   private headers = new Headers()
   private authUrl: string = 'https://bike-theft.herokuapp.com/knock/auth_token'
+  public loggedIn$: EventEmitter<any> = new EventEmitter()
+  // public itemAdded$: EventEmitter<TodoItem>;
 
   constructor(private http: Http) {
     if (localStorage.getItem('auth_token') == null) {
       this.setLoggedIn(false)
+      console.log("is NOT logged in")
     } else {
       this.setLoggedIn(true)
+      console.log("is already logged in")
     }
   }
+
 
   getHeaders() {
     this.headers.append('Content-Type', this.contentTypeJSON)
@@ -34,13 +39,20 @@ export class UserService {
   }
 
   loginSuccess(jwt) {
-    localStorage.setItem('auth_token', jwt)
     this.setLoggedIn(true)
+    this.loggedIn = true
+    console.log("about to emit")
+    this.loggedIn$.next({login: true})
+    localStorage.setItem('auth_token', jwt)
   }
 
   logout() {
     localStorage.removeItem('auth_token')
     this.setLoggedIn(false)
+  }
+
+  getEvent() {
+    return this.loggedIn$
   }
 
   setLoggedIn(status: boolean) {
@@ -51,6 +63,7 @@ export class UserService {
     if (localStorage.getItem('auth_token') == null) {
       return false
     }
+
     return this.loggedIn
   }
 

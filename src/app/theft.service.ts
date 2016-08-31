@@ -104,9 +104,6 @@ export class TheftService {
 
   create(theft: any): Observable<Theft>  {
     theft = this.formatCreateTheft(theft)
-    console.log('///////////////////////')
-    console.log(theft);
-    console.log('///////////////////////')
     return this.doPost(this.theftUrl, theft, this.getHeaders())
       .map(this.extractData)
       .catch(this.errorHandler)

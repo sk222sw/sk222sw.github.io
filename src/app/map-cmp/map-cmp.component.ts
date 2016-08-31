@@ -16,7 +16,7 @@ export class MapCmpComponent implements OnInit, DoCheck {
   private lat: number = 56
   private lon: number = 15
   private theftMarkers: Marker[] = []
-  private showMap = false
+  private showMap = true
   @Input() thefts: Theft[] = []
   @Output() selectTheft = new EventEmitter()
   @Input() coordinates: number[] = []

@@ -1,8 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef, KeyValueDiffers, DoCheck } from '@angular/core'
+import { ActivatedRoute, Params, ROUTER_DIRECTIVES, Router } from '@angular/router'
 import { TheftService } from '../theft.service'
 import { Theft } from '../interfaces'
 import { TheftInfoComponent } from '../theft-info'
-
+import { Broadcaster } from '../broadcaster'
 
 @Component({
   moduleId: module.id,
@@ -12,13 +13,14 @@ import { TheftInfoComponent } from '../theft-info'
   providers: [TheftService],
   directives: [
     TheftInfoComponent,
+    ROUTER_DIRECTIVES,
   ],
 })
 export class TheftListComponent implements OnInit, DoCheck {
   theftList: Theft[]
   limit = 10
   offset = 0
-  show = false
+  showList: boolean
   theftInfo: Theft
   showTheftInfo = false
   theftElements: Element[]
@@ -35,22 +37,27 @@ export class TheftListComponent implements OnInit, DoCheck {
   showFilters = false
   showSearchByDescription = false
   showSearchByPosition = false
+  thefts: Theft[]
+  tagName: string = ''
+  showFilter = false
 
-  @Input() thefts: Theft[]
   @Output() selectTheft = new EventEmitter()
   @Output() theftFilterChange = new EventEmitter()
   @Output() theftDeleted = new EventEmitter()
 
-  constructor(private theftService: TheftService, private el: ElementRef, private differs: KeyValueDiffers) {
+  constructor(
+    private theftService: TheftService,
+    private el: ElementRef,
+    private differs: KeyValueDiffers,
+    private route: ActivatedRoute,
+    private broadcaster: Broadcaster,
+    private router: Router) {
     this.differ = differs.find({}).create(null)
   }
 
-  closeTheftList() {
-    this.show = false
-  }
-
-  doShowTheftList() {
-    this.show = true
+  theftSelected(theft) {
+    this.router.navigate(['/', 'thefts', theft.id])
+    this.broadcaster.broadcast('AllThefts', [theft])
   }
 
   filterShow() {
@@ -74,12 +81,49 @@ export class TheftListComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
+    let id
+    this.route.params.forEach((params: Params) => {
+      id = +params['id']
+    })
+
+    if (this.route.snapshot.url.some(u => u.path === 'tags')) {
+      this.showTheftsByTag(id)
+    } else {
+        if (Number(id)) {
+          this.theftService.getById(id)
+            .subscribe(data => this.gotTheftInfo(data))
+          this.showList = false
+        } else {
+          this.getTheftList()
+          this.showList = true
+        }
+    }
   }
 
   ngDoCheck() {
-    if (this.originalThefts.length === 0 && typeof this.thefts === 'object') {
-      this.originalThefts = this.thefts
-    }
+  }
+
+  showTheftsByTag(id) {
+    let list
+    this.theftService.getAll()
+      .subscribe(data => {
+        list = data['thefts'].filter(t => t.tags.some(tag => tag.id === id))
+        this.showList = true
+        this.thefts = list
+        this.theftService.getTagById(id)
+          .subscribe(
+            d => {
+              this.filter = d['tag'].name
+            }
+          )
+        this.broadcaster.broadcast('AllThefts', this.thefts)
+      })
+  }
+
+  gotTheftInfo(data) {
+    const {theft} = data
+    this.theftInfo = theft
+    this.broadcaster.broadcast('TheftInfo', theft)
   }
 
   get theftListCount() { return this.theftList.length }
@@ -89,36 +133,20 @@ export class TheftListComponent implements OnInit, DoCheck {
     this.selectTheft.emit(event)
   }
 
-  // getTheftList() {
-  //   this.theftService.getAll(this.limit, this.offset)
-  //     .subscribe(
-  //     data => this.setTheftList(data),
-  //     error => this.errorMessage = <any>error
-  //     )
-  // }
+  getTheftList() {
+    this.theftService.getAll(this.limit, this.offset)
+      .subscribe(
+        data => this.setTheftList(data),
+        error => this.errorMessage = <any>error
+      )
+  }
 
-  // setTheftList(data: any): void {
-  //   this.show = true
-  //   this.originalThefts = data.thefts
-  //   this.theftList = data.thefts
-  // }
-
-  // nextPage() {
-  //   if (this.theftListCount < 10) return
-
-  //   this.offset += this.limit
-  //   this.getTheftList()
-  // }
-
-  // previousPage() {
-  //   if (this.theftListCount === 0) return
-
-  //   this.offset -= this.limit
-  //   this.getTheftList()
-  // }
+  setTheftList(data: any): void {
+    this.broadcaster.broadcast('AllThefts', data.thefts)
+    this.thefts = data.thefts
+  }
 
   handleError(err: any) {
-    console.error(err)
     this.errorMessage = err
   }
 
@@ -152,24 +180,11 @@ export class TheftListComponent implements OnInit, DoCheck {
     })
   }
 
-  filterByTag(event) {
-    const {name} = event
-    const filteredThefts = []
-    for (let theft of this.originalThefts) {
-      for (let tag of theft.tags) {
-        if (tag.name === name) filteredThefts.push(theft)
-      }
-    }
-    this.filter = name
-    this.thefts = filteredThefts
-    this.theftFilterChange.emit(this.thefts)
-  }
-
   removeFilter() {
-    this.thefts = this.originalThefts
+    this.router.navigate(['/', 'thefts'])
     this.searchValue = ''
-    this.filter = 'all'
-    this.theftFilterChange.emit(this.thefts)
+    this.filter = null
+    this.getTheftList()
   }
 
   search(event) {
@@ -188,13 +203,14 @@ export class TheftListComponent implements OnInit, DoCheck {
     }
     this.filter = searchValue
     this.thefts = thefts
-    this.theftFilterChange.emit(this.thefts)
+    this.broadcaster.broadcast('AllThefts', thefts)
   }
 
   findNear() {
     this.theftService.getNear(this.latitudeValue, this.longitudeValue)
       .subscribe(
         data => {
+
           const nearTheftIds = data['thefts']
           const nearThefts: Theft[] = []
           if (typeof nearTheftIds !== 'object') {
