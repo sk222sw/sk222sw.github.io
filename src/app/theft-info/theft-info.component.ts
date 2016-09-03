@@ -67,11 +67,6 @@ export class TheftInfoComponent {
     this.selectTag.emit(tag)
   }
 
-  selectTheft(theft) {
-    theft.preventDefault()
-    this.broadcaster.broadcast('AllThefts', [theft])
-  }
-
   isInArray(value, array) {
     return array.indexOf(value) > -1
   }

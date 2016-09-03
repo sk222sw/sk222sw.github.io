@@ -11,16 +11,16 @@
       <div *ngIf="!thefts" class="mdl-spinner mdl-js-spinner is-active"></div>
       <button *ngIf="thefts" (click)="removeFilter()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">{{filter || 'All'}}</button>
 <button (click)="searchByDescriptionToggle()" *ngIf="!showSearhByDescription" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
-        <i class="material-icons">description</i>
+        <i class="material-icons">search</i>
       </button>
       <button (click)="searchByPositionToggle()" *ngIf="!showSearhByPosition" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
         <i class="material-icons">place</i>
       </button>
-      <form *ngIf="showSearchByDescription" (ngSubmit)="search()">
+      <div *ngIf="showSearchByDescription">
         <label for="search">Search</label>
         <input [(ngModel)]="searchValue" name="search" type="text">
-        <button [disabled]="!searchValue" type="submit">Search</button>
-      </form>
+        <a [class.hidden]="!searchValue" [routerLink]="searchString(searchValue)">Search</a>
+      </div>
       <form *ngIf="showSearchByPosition" (ngSubmit)="findNear()">
         <label for="latitude">Latitude</label>
         <input [(ngModel)]="latitudeValue" name="latitude" type="text">
@@ -54,16 +54,14 @@
     </div>
     <div class="mdl-card__menu">
       <div class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-        <i class="material-icons">search</i>
+        <i class="material-icons">description</i>
       </div>
+
     </div>
   </div>
 </div>
 <div *ngIf="!showList">
   <theft-info [theft]="theftInfo"
-              (selectTag)="filterByTag($event)"
               (changeTitle)="handleChangeTitle($event)"
               (theftDeleted)="handleTheftDeleted($event)"></theft-info>
 </div>
-
-

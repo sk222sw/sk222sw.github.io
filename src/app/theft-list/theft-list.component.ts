@@ -82,11 +82,16 @@ export class TheftListComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     let id
+    let search
+
     this.route.params.forEach((params: Params) => {
+      search = params['string']
       id = +params['id']
     })
 
-    if (this.route.snapshot.url.some(u => u.path === 'tags')) {
+    if (this.route.snapshot.url.some(u => u.path === 'search')) {
+      this.search(search)
+    } else if (this.route.snapshot.url.some(u => u.path === 'tags')) {
       this.showTheftsByTag(id)
     } else {
         if (Number(id)) {
@@ -187,10 +192,16 @@ export class TheftListComponent implements OnInit, DoCheck {
     this.getTheftList()
   }
 
+  searchString(value) {
+    return ['/', 'search', `${value}`]
+  }
+
   search(event) {
-    this.theftService.getByDescription(this.searchValue)
+
+    const searchString = this.searchValue || event
+    this.theftService.getByDescription(searchString)
       .subscribe(
-        data => this.handleSearch(data, this.searchValue),
+        data => this.handleSearch(data, searchString),
         error => this.handleError('Server error, try again later.')
       )
   }
@@ -203,6 +214,7 @@ export class TheftListComponent implements OnInit, DoCheck {
     }
     this.filter = searchValue
     this.thefts = thefts
+    this.showList = true
     this.broadcaster.broadcast('AllThefts', thefts)
   }
 

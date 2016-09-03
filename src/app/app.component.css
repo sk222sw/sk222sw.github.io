@@ -1,3 +1,7 @@
+body {
+  position: relative;
+}
+
 .outlet-content {
   padding-top: 20px;
 }
@@ -23,4 +27,8 @@
 
 .demo-list-action {
   width: 300px;
+}
+
+.hidden {
+  display: none;
 }

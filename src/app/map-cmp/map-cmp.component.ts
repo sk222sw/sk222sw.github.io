@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core'
+import { Router, ROUTER_DIRECTIVES } from '@angular/router'
 import { GOOGLE_MAPS_PROVIDERS, GOOGLE_MAPS_DIRECTIVES } from 'angular2-google-maps/core'
 import { TheftService } from '../theft.service'
 
@@ -9,7 +10,7 @@ import { Marker, Theft } from '../interfaces'
   selector: 'map-cmp',
   templateUrl: 'map-cmp.component.html',
   styleUrls: ['map-cmp.component.css'],
-  directives: [GOOGLE_MAPS_DIRECTIVES],
+  directives: [GOOGLE_MAPS_DIRECTIVES, ROUTER_DIRECTIVES],
   providers: [TheftService],
 })
 export class MapCmpComponent implements OnInit, DoCheck {
@@ -21,7 +22,7 @@ export class MapCmpComponent implements OnInit, DoCheck {
   @Output() selectTheft = new EventEmitter()
   @Input() coordinates: number[] = []
 
-  constructor(private theftService: TheftService) { }
+  constructor(private theftService: TheftService, private router: Router) { }
 
   getLat = () => this.lat
   getLon = () => this.lon
@@ -53,6 +54,7 @@ export class MapCmpComponent implements OnInit, DoCheck {
   }
 
   getContentString(theft: any): string {
+
     return `Where: ${theft.position.address}
             When: ${theft.time} \r\n
             How: ${theft.description}`

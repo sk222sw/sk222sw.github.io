@@ -53,6 +53,7 @@ const barrels: string[] = [
   'app/theft-list',
   'app/theft-info',
   'app/create-theft',
+  'app/edit-theft',
   /** @cli-barrel */
 ]
 

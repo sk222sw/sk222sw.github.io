@@ -10,7 +10,19 @@
         [longitude]="theft?.position.longitude"
         [markerDraggable]="false">
       <sebm-google-map-info-window>
-        <strong>{{theft.description}}</strong>
+        <div>
+          {{theft.position.address}}
+        </div>
+        <div>
+          {{theft.time}}
+        </div>
+        <div>
+          {{theft.description}}
+        </div>
+        <div *ngFor="let tag of theft?.tags">
+          <a [routerLink]="['/', 'tags', tag.id]" (click)="broadcastTagName(tag.name)">{{tag?.name}}</a>
+          <button class="mdl-button mdl-js-button mdl-button--raised" *ngIf="editing" (click)="deleteTag(tag)">x</button>
+        </div>
       </sebm-google-map-info-window>
     </sebm-google-map-marker>
   </sebm-google-map>
