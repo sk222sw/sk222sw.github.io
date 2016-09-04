@@ -1,7 +1,3 @@
-<div>
-  {{errorMessage}}
-  <button [hidden]="!errorMessage" (click)="errorMessage = ''">Hide</button>
-</div>
 <div *ngIf="showList">
   <div class="middle demo-card-wide mdl-card mdl-shadow--2dp">
     <div class="mdl-card__title">
@@ -48,11 +44,6 @@
             </button>
         </div>
       </div>
-
-      <div>
-
-
-      </div>
     </div>
     <div class="mdl-card__menu">
       <div class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" style="border-radius: 0;">
@@ -60,10 +51,9 @@
           <a [routerLink]="['/', 'thefts', 'create']" class="material-icons">add</a>
         </i>
       </div>
-
     </div>
   </div>
 </div>
 <div *ngIf="!showList">
-  <theft-info [theft]="theftInfo" (changeTitle)="handleChangeTitle($event)" (theftDeleted)="handleTheftDeleted($event)"></theft-info>
+  <theft-info [theft]="theftInfo"></theft-info>
 </div>

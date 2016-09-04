@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input, ElementRef, KeyValueDiffers, DoCheck } from '@angular/core'
+import { Component, OnInit, DoCheck } from '@angular/core'
 import { ActivatedRoute, Params, ROUTER_DIRECTIVES, Router } from '@angular/router'
 import { TheftService } from '../theft.service'
 import { Theft } from '../interfaces'
@@ -17,57 +17,31 @@ import { Broadcaster } from '../broadcaster'
   ],
 })
 export class TheftListComponent implements OnInit, DoCheck {
-  theftList: Theft[]
   limit = 1000
   offset = 0
   showList: boolean
   theftInfo: Theft
-  showTheftInfo = false
   theftElements: Element[]
-  expandedTheftId: number
   showingInfo = false
-  theftTitles: Element[]
   filter = 'all'
-  originalThefts: Theft[] = []
   searchValue: string
-  differ: any
   latitudeValue: any
   longitudeValue: any
-  errorMessage = ''
   showFilters = false
   showSearchByDescription = false
   showSearchByPosition = false
   thefts: Theft[]
-  tagName: string = ''
-  showFilter = false
-
-  @Output() selectTheft = new EventEmitter()
-  @Output() theftFilterChange = new EventEmitter()
-  @Output() theftDeleted = new EventEmitter()
 
   constructor(
     private theftService: TheftService,
-    private el: ElementRef,
-    private differs: KeyValueDiffers,
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
     private router: Router) {
-    this.differ = differs.find({}).create(null)
   }
 
   theftSelected(theft) {
     this.router.navigate(['/', 'thefts', theft.id])
     this.broadcaster.broadcast('AllThefts', [theft])
-  }
-
-  filterShow() {
-    this.showFilters = true
-  }
-
-  filterHide() {
-    this.showFilters = false
-    this.showSearchByDescription = false
-    this.showSearchByPosition = false
   }
 
   searchByPositionToggle() {
@@ -131,58 +105,16 @@ export class TheftListComponent implements OnInit, DoCheck {
     this.broadcaster.broadcast('TheftInfo', theft)
   }
 
-  get theftListCount() { return this.theftList.length }
-
-  handleSelectTheft(event) {
-    this.expandTheft(event.id)
-    this.selectTheft.emit(event)
-  }
-
   getTheftList() {
     this.theftService.getAll(this.limit, this.offset)
       .subscribe(
-        data => this.setTheftList(data),
-        error => this.errorMessage = <any>error
+        data => this.setTheftList(data)
       )
   }
 
   setTheftList(data: any): void {
     this.broadcaster.broadcast('AllThefts', data.thefts)
     this.thefts = data.thefts
-  }
-
-  handleError(err: any) {
-    this.errorMessage = err
-  }
-
-  expandTheft(id: number) {
-    const theftElements = this.theftElements || this.el.nativeElement.querySelectorAll('.expand-info')
-    theftElements.forEach(e => {
-      if (e.classList.contains(`id-${id}`)) {
-        if (this.expandedTheftId === id) {
-          this.showingInfo = true
-          e.classList.add('hidden')
-          this.expandedTheftId = 0
-        } else {
-          this.expandedTheftId = id
-          e.classList.remove('hidden')
-        }
-      } else {
-        if (!e.classList.contains('hidden')) {
-          e.classList.add('hidden')
-        }
-      }
-    })
-  }
-
-  handleChangeTitle(event) {
-    const {id, description} = event
-    const theftTitles = this.theftTitles || this.el.nativeElement.querySelectorAll('.theft-title')
-    theftTitles.forEach(e => {
-      if (e.classList.contains(`theft-title-${id}`)) {
-        e.innerHTML = description
-      }
-    })
   }
 
   removeFilter() {
@@ -197,19 +129,17 @@ export class TheftListComponent implements OnInit, DoCheck {
   }
 
   search(event) {
-
     const searchString = this.searchValue || event
     this.theftService.getByDescription(searchString)
       .subscribe(
-        data => this.handleSearch(data, searchString),
-        error => this.handleError('Server error, try again later.')
+        data => this.handleSearch(data, searchString)
       )
   }
 
   handleSearch(data: any, searchValue: string) {
     const {thefts} = data
     if (!thefts.length) {
-      this.handleError('No thefts were found')
+      this.broadcaster.broadcast('Message', 'No thefts were found')
       return
     }
     this.filter = searchValue
@@ -226,7 +156,7 @@ export class TheftListComponent implements OnInit, DoCheck {
           const nearTheftIds = data['thefts']
           const nearThefts: Theft[] = []
           if (typeof nearTheftIds !== 'object') {
-            this.handleError('No nearby thefts found')
+            this.broadcaster.broadcast('Message', 'No nearby thefts were found')
             return
           }
           this.thefts.forEach(theft => {
@@ -235,11 +165,9 @@ export class TheftListComponent implements OnInit, DoCheck {
             }
           })
           this.thefts = nearThefts
-          this.theftFilterChange.emit(this.thefts)
           this.filter = `Latitude: ${this.latitudeValue}, Longitude: ${this.longitudeValue}`
         },
         error => {
-          this.handleError('No nearby thefts found')
           return
         }
       )
