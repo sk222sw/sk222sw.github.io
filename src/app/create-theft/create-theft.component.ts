@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, ElementRef } from '@angular/core'
 import { Router } from '@angular/router'
 import { TheftService } from '../theft.service'
 import { Theft, Tag } from '../interfaces'
+import { Broadcaster } from '../broadcaster'
 
 @Component({
   moduleId: module.id,
@@ -24,7 +25,8 @@ export class CreateTheftComponent {
   constructor(
     private theftService: TheftService,
     private el: ElementRef,
-    private router: Router) { }
+    private router: Router,
+    private broadcaster: Broadcaster) { }
 
   createTags() {
     const tagString = this.el.nativeElement.querySelector('.tag-input').value
@@ -54,10 +56,10 @@ export class CreateTheftComponent {
     this.theftService.create(theft)
       .subscribe(
         data => {
-          console.log('data', data)
           this.router.navigate(['/', 'thefts', data['theft'].id])
+          this.broadcaster.broadcast('Message', 'Theft created!')
         }, error => {
-          console.error("errir", error)
+          this.broadcaster.broadcast('Message', 'Error creating theft. Try later')
         }
       )
   }

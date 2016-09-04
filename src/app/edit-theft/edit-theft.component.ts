@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { Theft, Tag, Position } from '../interfaces'
 import { TheftService } from '../theft.service'
+import { Broadcaster } from '../broadcaster'
 
 @Component({
   moduleId: module.id,
@@ -24,7 +25,8 @@ export class EditTheftComponent implements OnInit {
     private theftService: TheftService,
     private route: ActivatedRoute,
     private el: ElementRef,
-    private router: Router) { }
+    private router: Router,
+    private broadcaster: Broadcaster) { }
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
@@ -33,9 +35,12 @@ export class EditTheftComponent implements OnInit {
 
     if (Number(this.id)) {
       this.theftService.getById(this.id)
-        .subscribe(data => this.gotTheftInfo(data),
-        error => {console.log(error)})
-    }
+        .subscribe(
+        data => this.gotTheftInfo(data),
+        error => {
+          this.broadcaster.broadcast('Message', 'Error getting theft. Try later.')
+        }
+      )}
   }
 
   gotTheftInfo(data) {
@@ -86,10 +91,11 @@ export class EditTheftComponent implements OnInit {
     this.theftService.update(this.theft, this.id)
       .subscribe(
         data => {
+          this.broadcaster.broadcast('Message', 'Theft updated!')
           this.router.navigate(['/', 'thefts', `${this.id}`])
         },
         error => {
-          console.log(error)
+          this.broadcaster.broadcast('Message', 'Error updating theft. Try later.')
         }
       )
   }

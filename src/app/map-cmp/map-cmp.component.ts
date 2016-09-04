@@ -61,7 +61,6 @@ export class MapCmpComponent implements OnInit, DoCheck {
   }
 
   errorMessage(err: any) {
-    console.error(err)
   }
 
 }

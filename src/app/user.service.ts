@@ -15,10 +15,8 @@ export class UserService {
   constructor(private http: Http) {
     if (localStorage.getItem('auth_token') == null) {
       this.setLoggedIn(false)
-      console.log("is NOT logged in")
     } else {
       this.setLoggedIn(true)
-      console.log("is already logged in")
     }
   }
 
@@ -41,7 +39,6 @@ export class UserService {
   loginSuccess(jwt) {
     this.setLoggedIn(true)
     this.loggedIn = true
-    console.log("about to emit")
     this.loggedIn$.next({login: true})
     localStorage.setItem('auth_token', jwt)
   }

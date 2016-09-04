@@ -143,6 +143,7 @@ export class TheftListComponent implements OnInit {
     const {thefts} = data
     if (!thefts.length) {
       this.broadcaster.broadcast('Message', 'No thefts were found')
+      this.router.navigate(['/', 'thefts'])
       return
     }
     this.filter = searchValue
@@ -167,6 +168,7 @@ export class TheftListComponent implements OnInit {
             }
           })
           this.thefts = nearThefts
+          this.broadcaster.broadcast('AllThefts', this.thefts)
           this.filter = `Latitude: ${this.latitudeValue}, Longitude: ${this.longitudeValue}`
         },
         error => {

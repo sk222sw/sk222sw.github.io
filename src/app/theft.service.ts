@@ -161,13 +161,9 @@ export class TheftService {
       .catch(this.errorHandler)
   }
 
-  getCreators() { /* not used */ }
-  getCreatorById(id: number) { /* not used */ }
-
   errorHandler(error: any) {
     let errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error'
-    // console.error(errMsg)
     return Observable.throw(errMsg)
   }
 }
