@@ -5,3 +5,8 @@
 .demo-card-wide {
   margin: 0 auto;
 }
+
+.straight-border {
+  border: solid rgba(0, 0, 0, 0) 0px !important;
+  border-radius: 0;
+}

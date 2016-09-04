@@ -3,14 +3,14 @@
   <button [hidden]="!errorMessage" (click)="errorMessage = ''">Hide</button>
 </div>
 <div *ngIf="showList">
-  <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+  <div class="middle demo-card-wide mdl-card mdl-shadow--2dp">
     <div class="mdl-card__title">
       <h2 class="mdl-card__title-text">Thefts</h2>
     </div>
     <div class="mdl-card__supporting-text">
       <div *ngIf="!thefts" class="mdl-spinner mdl-js-spinner is-active"></div>
       <button *ngIf="thefts" (click)="removeFilter()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">{{filter || 'All'}}</button>
-<button (click)="searchByDescriptionToggle()" *ngIf="!showSearhByDescription" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+      <button (click)="searchByDescriptionToggle()" *ngIf="!showSearhByDescription" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
         <i class="material-icons">search</i>
       </button>
       <button (click)="searchByPositionToggle()" *ngIf="!showSearhByPosition" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
@@ -30,9 +30,9 @@
         <br>
         <button [disabled]="findNearFormValid()" type="submit">Find near</button>
       </form>
-        <div class="demo-list-action mdl-list">
-          <div *ngFor="let theft of thefts" class="mdl-list__item">
-            <span class="mdl-list__item-primary-content">
+      <div class="demo-list-action mdl-list">
+        <div *ngFor="let theft of thefts" class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">
               <i class="material-icons mdl-list__item-avatar bike-icon">directions_bike</i>
               <span class="theft-span">
                 <button
@@ -41,11 +41,18 @@
                   {{theft?.description}}
                 </button>
               </span>
-            </span>
-            <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">create</i></a>
-            <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">delete</i></a>
-          </div>
+          </span>
+          <a [routerLink]="['/', 'thefts', theft.id, 'edit']" class="mdl-list__item-secondary-action" href="#"><i class="material-icons">create</i></a>
+          <button (click)="showConfirmDeleteBox = !showConfirmDeleteBox" class="mdl-list__item-secondary-action">
+                <i class="material-icons">delete</i>
+            </button>
         </div>
+        <div *ngIf="showConfirmDeleteBox">
+          Are you sure you want to delete this theft?
+          <button>Yeah, it was returned to me.</button>
+          <button>No.</button>
+        </div>
+      </div>
 
       <div>
 
@@ -53,15 +60,15 @@
       </div>
     </div>
     <div class="mdl-card__menu">
-      <div class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-        <i class="material-icons">description</i>
+      <div class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" style="border-radius: 0;">
+        <i>
+          <a [routerLink]="['/', 'thefts', 'create']" class="material-icons">add</a>
+        </i>
       </div>
 
     </div>
   </div>
 </div>
 <div *ngIf="!showList">
-  <theft-info [theft]="theftInfo"
-              (changeTitle)="handleChangeTitle($event)"
-              (theftDeleted)="handleTheftDeleted($event)"></theft-info>
+  <theft-info [theft]="theftInfo" (changeTitle)="handleChangeTitle($event)" (theftDeleted)="handleTheftDeleted($event)"></theft-info>
 </div>

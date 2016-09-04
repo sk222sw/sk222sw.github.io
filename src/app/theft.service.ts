@@ -73,7 +73,6 @@ export class TheftService {
 
   getAll(limit = 1000, offset = 0): Observable<Theft[]> {
     if (this.data) return Observable.of(this.extractData(this.data))
-
     return this.doGet(`${this.theftUrl}?limit=${limit}&offset=${offset}`, this.getHeaders())
       .map(data => {
         this.data = data

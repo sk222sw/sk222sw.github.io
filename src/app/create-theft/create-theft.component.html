@@ -1,8 +1,5 @@
 <div class="theft-form-container">
-<button *ngIf="!show" (click)="showForm()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-  <i class="material-icons">add</i>
-</button>
-<div *ngIf="show" class="demo-card-wide mdl-card mdl-shadow--2dp">
+<div class="demo-card-wide mdl-card mdl-shadow--2dp">
   <div class="mdl-card__title">
     <h2 class="mdl-card__title-text">Create theft</h2>
   </div>
@@ -44,7 +41,8 @@
       <label  for="tags">Tags (comma separated)</label>
       <input  class="tag-input mdl-textfield__input"
               type="text"
-              [(ngModel)]="tags" name="tags"
+              [(ngModel)]="tags"
+              name="tags"
               pattern="[A-Z,a-z, ]*">
     </div>
   </form>

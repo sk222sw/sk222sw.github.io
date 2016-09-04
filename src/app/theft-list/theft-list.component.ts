@@ -18,7 +18,7 @@ import { Broadcaster } from '../broadcaster'
 })
 export class TheftListComponent implements OnInit, DoCheck {
   theftList: Theft[]
-  limit = 10
+  limit = 1000
   offset = 0
   showList: boolean
   theftInfo: Theft
@@ -40,6 +40,7 @@ export class TheftListComponent implements OnInit, DoCheck {
   thefts: Theft[]
   tagName: string = ''
   showFilter = false
+  showConfirmDeleteBox = false
 
   @Output() selectTheft = new EventEmitter()
   @Output() theftFilterChange = new EventEmitter()
@@ -110,7 +111,7 @@ export class TheftListComponent implements OnInit, DoCheck {
 
   showTheftsByTag(id) {
     let list
-    this.theftService.getAll()
+    this.theftService.getAll(1000, 0)
       .subscribe(data => {
         list = data['thefts'].filter(t => t.tags.some(tag => tag.id === id))
         this.showList = true

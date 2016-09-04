@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter, ElementRef } from '@angular/core'
+import { Router } from '@angular/router'
 import { TheftService } from '../theft.service'
 import { Theft, Tag } from '../interfaces'
 
@@ -17,10 +18,13 @@ export class CreateTheftComponent {
   latitude: number
   longitude: number
   tags = []
-  show = false
+  tagList: string[]
   @Output() theftCreated = new EventEmitter()
 
-  constructor(private theftService: TheftService, private el: ElementRef) { }
+  constructor(
+    private theftService: TheftService,
+    private el: ElementRef,
+    private router: Router) { }
 
   createTags() {
     const tagString = this.el.nativeElement.querySelector('.tag-input').value
@@ -28,15 +32,16 @@ export class CreateTheftComponent {
     const tagList = []
     if (!tags.length || tags[0] === '') return
     tags.forEach(tag => {
-      tagList.push({name: tag})
+      tagList.push(tag)
     })
+    this.tagList = tagList
     this.tags = tagList
+    this.tags = this.tags.map(tag => {return <Tag>{name: tag}})
   }
 
   onSubmit(event) {
 
     this.createTags()
-
     const theft = {
       description: this.description,
       time: this.date,
@@ -49,13 +54,8 @@ export class CreateTheftComponent {
     this.theftService.create(theft)
       .subscribe(
         data => {
-          this.theftCreated.emit(data['theft'])
-          this.closeForm()
-          this.description = ''
-          this.date = ''
-          this.latitude = null
-          this.longitude = null
-          this.el.nativeElement.querySelector('.tag-input').value = null
+          console.log('data', data)
+          this.router.navigate(['/', 'thefts', data['theft'].id])
         }, error => {
           console.error("errir", error)
         }
@@ -64,18 +64,15 @@ export class CreateTheftComponent {
 
   formValid() {
     return (
-      this.description !== ''
+         this.description !== ''
+      && this.description.match(/^[A-Za-zÅÄÖåäö ]+$/)
       && Number(this.latitude)
       && Number(this.longitude)
       && this.date != null)
   }
 
   closeForm() {
-    this.show = false
-  }
-
-  showForm() {
-    this.show = true
+    this.router.navigate(['/', 'thefts'])
   }
 
 }
