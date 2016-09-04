@@ -9,6 +9,11 @@
   text-overflow: ellipsis;
 }
 
+.delete-button {
+  border: none;
+  background: white;
+}
+
 .mdl-chip {
   background: #EECEEC;
   border: solid rgba(255, 255, 255, 0.8) 1px;

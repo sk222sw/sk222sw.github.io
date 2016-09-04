@@ -44,6 +44,7 @@ export class AppComponent implements OnInit, DoCheck {
     private el: ElementRef,
     private user: UserService,
     private route: ActivatedRoute,
+    private router: Router,
     private guard: LoggedInGuard,
     private broadcaster: Broadcaster) {
   }
@@ -113,6 +114,7 @@ export class AppComponent implements OnInit, DoCheck {
     this.user.logout()
     this.loggedIn = false
     this.snackbar('See ya!')
+    this.router.navigate(['/'])
   }
 
 }

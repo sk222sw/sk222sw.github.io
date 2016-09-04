@@ -39,7 +39,7 @@
               </span>
           </span>
           <a *ngIf="loggedIn" [routerLink]="['/', 'thefts', theft.id, 'edit']" class="mdl-list__item-secondary-action" href="#"><i class="material-icons">create</i></a>
-          <button *ngIf="loggedIn" (click)="delete(theft)" class="mdl-list__item-secondary-action">
+          <button *ngIf="loggedIn" (click)="delete(theft)" class="mdl-list__item-secondary-action delete-button">
                 <i class="material-icons">delete</i>
             </button>
         </div>
