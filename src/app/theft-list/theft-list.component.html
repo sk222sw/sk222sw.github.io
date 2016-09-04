@@ -43,14 +43,9 @@
               </span>
           </span>
           <a [routerLink]="['/', 'thefts', theft.id, 'edit']" class="mdl-list__item-secondary-action" href="#"><i class="material-icons">create</i></a>
-          <button (click)="showConfirmDeleteBox = !showConfirmDeleteBox" class="mdl-list__item-secondary-action">
+          <button (click)="delete(theft)" class="mdl-list__item-secondary-action">
                 <i class="material-icons">delete</i>
             </button>
-        </div>
-        <div *ngIf="showConfirmDeleteBox">
-          Are you sure you want to delete this theft?
-          <button>Yeah, it was returned to me.</button>
-          <button>No.</button>
         </div>
       </div>
 

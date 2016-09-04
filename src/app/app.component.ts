@@ -71,7 +71,12 @@ export class AppComponent implements OnInit, DoCheck {
       .subscribe(data => {
         this.selectTheft(data as any)
       })
+    this.broadcaster.on<string>('Message')
+      .subscribe(data => {
+        this.snackbar(data)
+      })
   }
+
 
   selectTheft(event: Theft) {
     this.currentTheftCoordinates = [event.position.latitude, event.position.longitude]

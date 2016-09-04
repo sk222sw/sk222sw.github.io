@@ -40,7 +40,6 @@ export class TheftListComponent implements OnInit, DoCheck {
   thefts: Theft[]
   tagName: string = ''
   showFilter = false
-  showConfirmDeleteBox = false
 
   @Output() selectTheft = new EventEmitter()
   @Output() theftFilterChange = new EventEmitter()
@@ -230,7 +229,7 @@ export class TheftListComponent implements OnInit, DoCheck {
             this.handleError('No nearby thefts found')
             return
           }
-          this.originalThefts.forEach(theft => {
+          this.thefts.forEach(theft => {
             if (nearTheftIds.indexOf(theft.id) > -1) {
               nearThefts.push(theft)
             }
@@ -250,8 +249,18 @@ export class TheftListComponent implements OnInit, DoCheck {
     return !Number(this.latitudeValue) || !Number(this.longitudeValue)
   }
 
-  handleTheftDeleted(event) {
-    this.theftDeleted.emit(event)
-  }
 
+  delete(theft) {
+    this.thefts = this.thefts.filter(t => t.id !== theft.id)
+    this.theftService.delete(theft.id)
+      .subscribe(
+        data => {
+          this.broadcaster.broadcast('Message', 'Theft deleted!')
+          console.log(data)
+        },
+        error => {
+          this.broadcaster.broadcast('Message', 'Error deleting theft. Try later')
+        }
+      )
+  }
 }
