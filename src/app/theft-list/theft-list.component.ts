@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Params, ROUTER_DIRECTIVES, Router } from '@angular/router'
 import { TheftService } from '../theft.service'
 import { Theft } from '../interfaces'
@@ -16,7 +16,7 @@ import { Broadcaster } from '../broadcaster'
     ROUTER_DIRECTIVES,
   ],
 })
-export class TheftListComponent implements OnInit, DoCheck {
+export class TheftListComponent implements OnInit {
   limit = 1000
   offset = 0
   showList: boolean
@@ -79,9 +79,6 @@ export class TheftListComponent implements OnInit, DoCheck {
     }
   }
 
-  ngDoCheck() {
-  }
-
   showTheftsByTag(id) {
     let list
     this.theftService.getAll(1000, 0)
@@ -108,7 +105,10 @@ export class TheftListComponent implements OnInit, DoCheck {
   getTheftList() {
     this.theftService.getAll(this.limit, this.offset)
       .subscribe(
-        data => this.setTheftList(data)
+        data => this.setTheftList(data),
+        error => {
+          this.broadcaster.broadcast('Message', 'There was an error getting thefts.')
+        }
       )
   }
 
@@ -132,7 +132,10 @@ export class TheftListComponent implements OnInit, DoCheck {
     const searchString = this.searchValue || event
     this.theftService.getByDescription(searchString)
       .subscribe(
-        data => this.handleSearch(data, searchString)
+        data => this.handleSearch(data, searchString),
+        error => {
+          this.broadcaster.broadcast('Message', 'Search failed.')
+        }
       )
   }
 
@@ -152,7 +155,6 @@ export class TheftListComponent implements OnInit, DoCheck {
     this.theftService.getNear(this.latitudeValue, this.longitudeValue)
       .subscribe(
         data => {
-
           const nearTheftIds = data['thefts']
           const nearThefts: Theft[] = []
           if (typeof nearTheftIds !== 'object') {
@@ -168,6 +170,7 @@ export class TheftListComponent implements OnInit, DoCheck {
           this.filter = `Latitude: ${this.latitudeValue}, Longitude: ${this.longitudeValue}`
         },
         error => {
+          this.broadcaster.broadcast('Message', 'Server error. Try again later.')
           return
         }
       )
@@ -184,7 +187,6 @@ export class TheftListComponent implements OnInit, DoCheck {
       .subscribe(
         data => {
           this.broadcaster.broadcast('Message', 'Theft deleted!')
-          console.log(data)
         },
         error => {
           this.broadcaster.broadcast('Message', 'Error deleting theft. Try later')
