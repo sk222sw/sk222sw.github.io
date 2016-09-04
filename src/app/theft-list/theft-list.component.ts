@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Params, ROUTER_DIRECTIVES, Router } from '@angular/router'
 import { TheftService } from '../theft.service'
+import { UserService } from '../user.service'
 import { Theft } from '../interfaces'
 import { TheftInfoComponent } from '../theft-info'
 import { Broadcaster } from '../broadcaster'
@@ -31,12 +32,14 @@ export class TheftListComponent implements OnInit {
   showSearchByDescription = false
   showSearchByPosition = false
   thefts: Theft[]
+  loggedIn: boolean
 
   constructor(
     private theftService: TheftService,
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
-    private router: Router) {
+    private router: Router,
+    private user: UserService) {
   }
 
   theftSelected(theft) {
@@ -57,6 +60,8 @@ export class TheftListComponent implements OnInit {
   ngOnInit() {
     let id
     let search
+
+    this.loggedIn = this.user.isLoggedIn()
 
     this.route.params.forEach((params: Params) => {
       search = params['string']

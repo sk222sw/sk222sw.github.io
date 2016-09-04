@@ -38,8 +38,8 @@
                 </button>
               </span>
           </span>
-          <a [routerLink]="['/', 'thefts', theft.id, 'edit']" class="mdl-list__item-secondary-action" href="#"><i class="material-icons">create</i></a>
-          <button (click)="delete(theft)" class="mdl-list__item-secondary-action">
+          <a *ngIf="loggedIn" [routerLink]="['/', 'thefts', theft.id, 'edit']" class="mdl-list__item-secondary-action" href="#"><i class="material-icons">create</i></a>
+          <button *ngIf="loggedIn" (click)="delete(theft)" class="mdl-list__item-secondary-action">
                 <i class="material-icons">delete</i>
             </button>
         </div>
@@ -47,8 +47,11 @@
     </div>
     <div class="mdl-card__menu">
       <div class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" style="border-radius: 0;">
-        <i>
+        <i *ngIf="loggedIn">
           <a [routerLink]="['/', 'thefts', 'create']" class="material-icons">add</a>
+        </i>
+        <i *ngIf="!loggedIn">
+          <a [routerLink]="['/', 'thefts']" class="material-icons">face</a>
         </i>
       </div>
     </div>

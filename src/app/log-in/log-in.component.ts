@@ -36,6 +36,7 @@ export class LogInComponent implements OnInit {
           const {jwt} = JSON.parse(data)
           this.userService.loginSuccess(jwt)
           this.router.navigate(['/'])
+          window.location.reload()
         },
         err => {
           this.errorMessage = 'Login failed'
