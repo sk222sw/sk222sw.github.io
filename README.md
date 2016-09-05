@@ -5,6 +5,9 @@
 ### Testköra
 För att testköra applikationen kan man gå till [biketheftauto](http://biketheft.azurewebsites.net/). Notera dock att API:et hostas på Heroku, och att det hamnar i viloläge när det inte använts på ett tag, därför kan de dröja lite innan kartan och resurserna laddas.
 
+Inloggningsuppgifter är:  
+användarnamn: so@nny.com / lösenord: hej
+
 ### Bygga
 1. Skaffa [node](https://nodejs.org/en/) och [npm](https://www.npmjs.com/) (följer med node). Jag har kört node i version 5.5 och npm i version 3.3. Det finns lite olika [versionshanterare](https://github.com/tj/n) för node om man vill byta smidigt.
 2. Kör sedan `npm install -g angular-cli` för att installera [ng-cli](https://github.com/angular/angular-cli).
